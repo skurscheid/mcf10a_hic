@@ -8,10 +8,20 @@ min_version("5.1.2")
 
 ##### load config and sample sheets #####
 
-configfile: "config.yaml"
+#configfile: "config.yaml"
 
 samples = pd.read_csv(config["samples"], sep = "\t").set_index("sample", drop=False)
 units = pd.read_csv(config["units"], sep = "\t").set_index(["sample", "batch", "lane", "replicate"], drop=False)
+
+##### load additional functions #####
+
+include: "scripts/helper.py"
+
+##### load additional workflow rules #####
+
+include: "rules/fastp.smk"
+
+##### build targets #####
 
 rule all:
     input:
@@ -20,14 +30,15 @@ rule all:
 
 rule all_trim:
     input:
-    # for index, row in units.iterrows():
-        #print(row['batch'], row['sample'], row['lane'], row['replicate'])
-        expand("fastp/trimmed/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz",
-        "fastp/report/{batch}/{sample}_{lane}_{replicate}.fastp.{suffix}",
+        expand("fastp/trimmed/{file}.{end}.fastq.gz",
+                file = fastp_targets(units),
+                end = ["end1", "end2"]),
+        expand("fastp/report/{file}.fastp.{suffix}",
+                file = fastp_targets(units),
+                suffix = ["json", "html"])
 
 rule all_align:
     input:
         # The first rule should define the default target files
         # Subsequent target rules can be specified below. They should start with all_*.
 
-include: "rules/fastp.smk"
