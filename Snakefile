@@ -35,7 +35,7 @@ rule all_trim:
         expand("fastp/trimmed/se/{file}.end1.fastq.gz",
                 file = fastp_targets(units)),
         expand("fastp/trimmed/se/{file}.end2.fastq.gz",
-                file = fastp_targets(units)]),
+                file = fastp_targets(units)),
         expand("fastp/report/se/{file}.end1.fastp.{suffix}",
                 file = fastp_targets(units),
                 suffix = ["json", "html"]),
