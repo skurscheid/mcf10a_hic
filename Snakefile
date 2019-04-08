@@ -8,7 +8,7 @@ min_version("5.1.2")
 
 ##### load config and sample sheets #####
 
-#configfile: "config.yaml"
+configfile: "config.yaml"
 
 samples = pd.read_csv(config["samples"], sep = "\t").set_index("sample", drop=False)
 units = pd.read_csv(config["units"], sep = "\t").set_index(["sample", "batch", "lane", "replicate"], drop=False)
