@@ -21,7 +21,7 @@ singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
 rule run_fastp:
     conda:
-        "../envs/fastp.yaml"
+        "../envs/fastqProcessing.yaml"
     version:
         "2"
     threads:
@@ -34,4 +34,4 @@ rule run_fastp:
         report_html = "fastp/report/{batch}/{sample}_{lane}_{replicate}.fastp.html",
         report_json = "fastp/report/{batch}/{sample}_{lane}_{replicate}.fastp.json"
     shell:
-        "fastp -i {input.fq} -I {input.fq} -o {output.trimmed_read1} -O {output.trimmed_read2} --html {output.report_html} --json {output.report_json} --thread {threads}"
+        "fastp -i {input[0]} -I {input[1]} -o {output.trimmed_read1} -O {output.trimmed_read2} --html {output.report_html} --json {output.report_json} --thread {threads}"
