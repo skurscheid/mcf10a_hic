@@ -2,7 +2,7 @@ samples: samples.tsv
 units: units.tsv
 
 params:
-  bowtie2: ""
+  bowtie2:
     index:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
