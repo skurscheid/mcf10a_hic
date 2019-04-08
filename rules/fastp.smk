@@ -15,7 +15,7 @@ For usage, include this in your workflow.
 
 def get_fastq(wildcards):
     """ returns fastq files for given sample """
-    return units.loc[(wildcards.sample, wildcards.batch, wildcards.lane, wildcards.replicate), ["fq1", "fq2"]].dropna()
+    return units.loc[(wildcards["sample"], wildcards["batch"], wildcards["lane"], int(wildcards["replicate"])), ["fq1", "fq2"]].dropna()
 
 singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
