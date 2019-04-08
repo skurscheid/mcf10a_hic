@@ -32,12 +32,17 @@ rule all:
 
 rule all_trim:
     input:
-        expand("fastp/trimmed/{file}.{end}.fastq.gz",
+        expand("fastp/trimmed/se/{file}.end1.fastq.gz",
+                file = fastp_targets(units)),
+        expand("fastp/trimmed/se/{file}.end2.fastq.gz",
+                file = fastp_targets(units)]),
+        expand("fastp/report/se/{file}.end1.fastp.{suffix}",
                 file = fastp_targets(units),
-                end = ["end1", "end2"]),
-        expand("fastp/report/{file}.fastp.{suffix}",
+                suffix = ["json", "html"]),
+        expand("fastp/report/se/{file}.end2.fastp.{suffix}",
                 file = fastp_targets(units),
                 suffix = ["json", "html"])
+
 
 rule all_align:
     input:

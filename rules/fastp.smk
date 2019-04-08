@@ -19,7 +19,7 @@ def get_fastq(wildcards):
 
 singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
-rule run_fastp:
+rule run_fastp_pe:
     conda:
         "../envs/fastqProcessing.yaml"
     version:
@@ -29,9 +29,25 @@ rule run_fastp:
     input:
         get_fastq
     output:
-        trimmed_read1 = "fastp/trimmed/{batch}/{sample}_{lane}_{replicate}.end1.fastq.gz",
-        trimmed_read2 = "fastp/trimmed/{batch}/{sample}_{lane}_{replicate}.end2.fastq.gz",
-        report_html = "fastp/report/{batch}/{sample}_{lane}_{replicate}.fastp.html",
-        report_json = "fastp/report/{batch}/{sample}_{lane}_{replicate}.fastp.json"
+        trimmed_read1 = "fastp/trimmed/pe/{batch}/{sample}_{lane}_{replicate}.end1.fastq.gz",
+        trimmed_read2 = "fastp/trimmed/pe/{batch}/{sample}_{lane}_{replicate}.end2.fastq.gz",
+        report_html = "fastp/report/pe/{batch}/{sample}_{lane}_{replicate}.fastp.html",
+        report_json = "fastp/report/pe/{batch}/{sample}_{lane}_{replicate}.fastp.json"
     shell:
         "fastp -i {input[0]} -I {input[1]} -o {output.trimmed_read1} -O {output.trimmed_read2} --html {output.report_html} --json {output.report_json} --thread {threads}"
+
+rule run_fastp_se:
+    conda:
+        "../envs/fastqProcessing.yaml"
+    version:
+        "2"
+    threads:
+        1
+    input:
+        get_fastq
+    output:
+        trimmed = "fastp/trimmed/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz",
+        report_html = "fastp/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastp.html",
+        report_json = "fastp/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastp.json"
+    shell:
+        "fastp -i {input.fq} -o {output.trimmed} --html {output.report_html} --json {output.report_json} --thread {threads}"
