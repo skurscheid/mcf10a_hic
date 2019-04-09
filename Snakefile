@@ -22,6 +22,7 @@ include: "scripts/helper.py"
 ##### load additional workflow rules #####
 
 include: "rules/fastp.smk"
+include: "rules/bowtie2.smk"
 
 ##### build targets #####
 
@@ -46,6 +47,10 @@ rule all_trim:
 
 rule all_align:
     input:
-        # The first rule should define the default target files
-        # Subsequent target rules can be specified below. They should start with all_*.
-
+        expand("bowtie2/align/se/{file}.{end}.bam",
+                file = fastp_targets(units),
+                end = ["end1", "end2"]),
+        expand("bowtie2/report/se/{file}.{end}.txt",
+                file = fastp_targets(units),
+                end = ["end1", "end2"])
+   

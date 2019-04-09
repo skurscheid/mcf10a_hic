@@ -24,10 +24,21 @@ rule bowtie2_se:
     threads:
         8
     params:
-        index = get_index("gdu", config)
+        index = get_index("gdu", config),
+        cli_params = config['params']['bowtie2']['cli_params']
     input:
+        fq = "fastp/trimmed/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz"
     output:
+        bam = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.{end}.bam",
+        metrics = "bowtie2/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.txt"
     shell:
-    """
-
-    """
+        """
+            bowtie2 {params.cli_params}\
+                    -p {threads}\
+                    -x {params.index}\
+                    -U {input.fq}\
+                    --rg-id {wildcards.sample}\
+                    --rg "replicate:{wildcards.replicate}\
+                    --met-file {output.metrics}\
+            | samtools view -Sb - > {output.bam}
+        """
