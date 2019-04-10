@@ -53,4 +53,8 @@ rule all_align:
         expand("bowtie2/report/se/{file}.{end}.txt",
                 file = fastp_targets(units),
                 end = ["end1", "end2"])
-   
+
+rule align_one:
+    input:
+        "bowtie2/align/se/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ_L001_2.end1.bam",
+        "bowtie2/report/se/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ_L001_2.end1.txt"
