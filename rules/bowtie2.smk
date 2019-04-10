@@ -21,6 +21,8 @@ singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
 rule bowtie2_se:
     """ runs alignment of single-end fastq file, modified parameters specific for HiC data"""
+    conda:
+        "../envs/fastqProcessing.yaml"
     threads:
         8
     params:
@@ -33,12 +35,12 @@ rule bowtie2_se:
         metrics = "bowtie2/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.txt"
     shell:
         """
-            bowtie2 {params.cli_params}\
+            unset PERL5LIB; bowtie2 {params.cli_params}\
                     -p {threads}\
                     -x {params.index}\
                     -U {input.fq}\
-                    --rg-id {wildcards.sample}\
-                    --rg "replicate:{wildcards.replicate}\
+                    --rg-id {wildcards.sample}:{wildcards.batch}\
+                    --rg "replicate:{wildcards.replicate}"\
                     --met-file {output.metrics}\
             | samtools view -Sb - > {output.bam}
         """
