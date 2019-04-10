@@ -1,3 +1,10 @@
-# This file should contain everything to configure the workflow on a global scale.
-# In case of sample based data, it should be complemented by a samples.tsv file that contains
-# one row per sample. It can be parsed easily via pandas.
+samples: samples.tsv
+units: units.tsv
+
+params:
+  bowtie2:
+    cli_params: "--reorder --local --rdg 6,4 --rfg 6,4"
+    index:
+      shiny: ""
+      gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
+  fastp: ""
