@@ -10,8 +10,7 @@ else
     fi
 fi
 unset __conda_setup
-
-~/miniconda3/envs/snakemake-testing/bin/snakemake -s Snakefile all_align\
+~/miniconda3/envs/snakemake-testing/bin/snakemake -s Snakefile $1\
 	--configfile ./config.yaml \
 	--use-conda\
 	--cluster "qsub -pe threads {cluster.threads} \
