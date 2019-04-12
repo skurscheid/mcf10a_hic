@@ -23,6 +23,7 @@ include: "scripts/helper.py"
 
 include: "rules/fastp.smk"
 include: "rules/bowtie2.smk"
+inlcude: "rules/hicexplorer.smk"
 
 ##### build targets #####
 
@@ -43,7 +44,6 @@ rule all_trim:
         expand("fastp/report/se/{file}.end2.fastp.{suffix}",
                 file = fastp_targets(units),
                 suffix = ["json", "html"])
-
 
 rule all_align:
     input:
