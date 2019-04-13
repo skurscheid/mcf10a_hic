@@ -12,8 +12,8 @@ min_version("5.1.2")
 
 #configfile: "config.yaml"
 
-samples = pd.read_csv(config["samples"], sep = "\t").se(MCF10AshZ, drop=False)
-units = pd.read_csv(config["units"], sep = "\t").set[MCF10AshZ, "batch", "lane", "replicate"], drop=False)
+samples = pd.read_csv(config["samples"], sep = "\t").set_index("sample", drop=False)
+units = pd.read_csv(config["units"], sep = "\t").set_index(["sample", "batch", "lane", "replicate"], drop=False)
 
 ##### load additional functions #####
 
@@ -21,8 +21,8 @@ include: "scripts/helper.py"
 
 ##### load additional workflow rules #####
 
-include: "rules/fastp.smk"
-include: "rules/bowtie2.smk"
+#include: "rules/fastp.smk"
+#include: "rules/bowtie2.smk"
 inlcude: "rules/hicexplorer.smk"
 
 ##### build targets #####
@@ -57,7 +57,7 @@ rule all_align:
 rule hicbuildmatrix_single_test_run:
     input:
         "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2_hic_matrix.h5",
-        #:"hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2/qc"
+        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2/qc"
 
 rule align_one:
     input:
