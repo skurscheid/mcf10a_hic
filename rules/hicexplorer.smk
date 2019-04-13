@@ -25,7 +25,7 @@ rule findRestSites:
     input:
         fasta = lambda wildcards: config["params"]["hicexplorer"]["genome_fasta"]["gdu"]
     output:
-        rest_sites_bed = "hicexplorer/findRestSites/hg38_{res_enzyme}_rest_sites.bed"
+        rest_sites_bed = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
     shell:
         """
         hicexplorer --fasta {input.fasta} --searchPattern {params.searchPattern} --outFile {output.rest_sites_bed}
@@ -43,7 +43,7 @@ rule hicBuildMatrix_restriction_site_resolution_test_run:
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
-        restrictionCutFile = "hicexplorer/findRestSites/hg38_{resolution}_rest_sites.bed"
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{resolution}_rest_sites.bed"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
         qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
@@ -53,7 +53,7 @@ rule hicBuildMatrix_restriction_site_resolution_test_run:
                 --restrictionCutFile {input.restrictionCutFile} \
                 --threads {threads} \
                 --inputBufferSize {params.inputBufferSize} \
-                ---outFileName {output.outHicMatrix} \
+                --outFileName {output.outHicMatrix} \
                 --QCfolder {output.qcFolder} \
                 --doTestRun
         """
