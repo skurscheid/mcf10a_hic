@@ -31,6 +31,17 @@ rule findRestSites:
         hicexplorer --fasta {input.fasta} --searchPattern {params.searchPattern} --outFile {output.rest_sites_bed}
         """
 
+rule mappableRestSites:
+    version:
+        "1"
+    params:
+    input:
+        rest_sites_bed = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
+    output:
+        mappable_rest_sites_bed = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.{kmer}.bed"
+    shell:
+        "touch {output.mappable_rest_sites_bed}"
+
 rule hicBuildMatrix_restrictionCutFile_test_run:
     conda:
         "../envs/hicexplorer.yaml"
@@ -43,12 +54,12 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
-        restrictionCutFile = "hicexplorer/findRestSite/hg38_{resolution}_rest_sites.bed"
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
     benchmark:
-        "hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+        outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -72,12 +83,12 @@ rule hicBuildMatrix_restrictionCutFile:
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
-        restrictionCutFile = "hicexplorer/findRestSite/hg38_{resolution}_rest_sites.bed"
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
     benchmark:
         "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+        outHicMatrix = "hicexplorer/hicBuildMatrix/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
