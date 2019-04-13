@@ -55,14 +55,10 @@ rule all_align:
                 end = ["end1", "end2"])
 
 rule all_hicbuildmatrix:
-	expand("hicexplorer/hicBuildMatrix/HindIII/{batch}/{sample}/{file}_hic_matrix.h5",
-               batch = [],
-               sample = [],
-               file = ),
-	expand("hicexplorer/hicBuildMatrix/HindIII/{batch}/{sample}/qc",
-               batch = [],
-               sample = [],
-               file = ),
+	expand("hicexplorer/hicBuildMatrix/HindIII/{file}_hic_matrix.h5",
+               file = hicmatrixbuilder_targets(units)),
+	expand("hicexplorer/hicBuildMatrix/HindIII/{file}/qc",
+               file = hicmatrixbuilder_targets(units))),
 
 rule hicbuildmatrix_single_test_run:
     input:

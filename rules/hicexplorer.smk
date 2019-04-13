@@ -60,7 +60,30 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
                 --doTestRun
         """
 
-#rule verify:
-#    input:
-#        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2_hic_matrix.h5",
-#        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2/qc"
+rule hicBuildMatrix_restrictionCutFile:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        1
+    params:
+        inputBufferSize = 100000
+    threads:
+        4
+    input:
+        mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
+        mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{resolution}_rest_sites.bed"
+    benchmark:
+        "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+    output:
+        outHicMatrix = "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+    shell:
+        """
+        hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
+                --restrictionCutFile {input.restrictionCutFile} \
+                --threads {threads} \
+                --inputBufferSize {params.inputBufferSize} \
+                --outFileName {output.outHicMatrix} \
+                --QCfolder {output.qcFolder}
+        """

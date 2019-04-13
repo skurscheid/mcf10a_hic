@@ -18,3 +18,10 @@ def fastp_targets(units):
     for index, row in units.iterrows():
         t.append(row['batch'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
+
+def hicmatrixbuilder_targets(units):
+    """function for creating snakemake targets for executing fastp rule"""
+    t = []
+    for index, row in units.iterrows():
+        t.append(row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
+    return(t)
