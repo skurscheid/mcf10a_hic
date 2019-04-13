@@ -21,9 +21,9 @@ include: "scripts/helper.py"
 
 ##### load additional workflow rules #####
 
-#include: "rules/fastp.smk"
-#include: "rules/bowtie2.smk"
-inlcude: "rules/hicexplorer.smk"
+include: "rules/fastp.smk"
+include: "rules/bowtie2.smk"
+include: "rules/hicexplorer.smk"
 
 ##### build targets #####
 
@@ -54,10 +54,20 @@ rule all_align:
                 file = fastp_targets(units),
                 end = ["end1", "end2"])
 
+rule all_hicbuildmatrix:
+	expand("hicexplorer/hicBuildMatrix/HindIII/{batch}/{sample}/{file}_hic_matrix.h5",
+               batch = [],
+               sample = [],
+               file = ),
+	expand("hicexplorer/hicBuildMatrix/HindIII/{batch}/{sample}/qc",
+               batch = [],
+               sample = [],
+               file = ),
+
 rule hicbuildmatrix_single_test_run:
     input:
-        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2/qc"
+        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_1_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_1/qc"
 
 rule align_one:
     input:

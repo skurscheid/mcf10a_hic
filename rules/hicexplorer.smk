@@ -44,6 +44,8 @@ rule hicBuildMatrix_restriction_site_resolution_test_run:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
         restrictionCutFile = "hicexplorer/findRestSite/hg38_{resolution}_rest_sites.bed"
+    benchmark:
+        "hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
         qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
