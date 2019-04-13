@@ -7,10 +7,10 @@ __date__ = "2019-04-10"
 
 
 """
-    Rules for processing HiC data with HiC Explorer
-    (https://github.com/deeptools/HiCExplorer)
+Rules for processing HiC data with HiC Explorer
+(https://github.com/deeptools/HiCExplorer)
 
-    For usage, include this in your workflow.
+For usage, include this in your workflow.
 """
 
 singularity: "docker://skurscheid/snakemake_baseimage:0.2"
@@ -31,7 +31,7 @@ rule findRestSites:
         hicexplorer --fasta {input.fasta} --searchPattern {params.searchPattern} --outFile {output.rest_sites_bed}
         """
 
-rule hicBuildMatrix_restriction_site_resolution_test_run:
+rule hicBuildMatrix_restrictionCutFile_test_run:
     conda:
         "../envs/hicexplorer.yaml"
     version:
@@ -60,7 +60,7 @@ rule hicBuildMatrix_restriction_site_resolution_test_run:
                 --doTestRun
         """
 
-rule verify:
-    input:
-        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2/qc"
+#rule verify:
+#    input:
+#        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2_hic_matrix.h5",
+#        "hicexplorer/hicBuildMatrix/test_run/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ/MCF10AshZ_L001_2/qc"
