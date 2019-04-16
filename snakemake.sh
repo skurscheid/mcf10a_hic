@@ -13,15 +13,8 @@ unset __conda_setup
 ~/miniconda3/envs/snakemake-testing/bin/snakemake -s $1 $2\
 	--configfile ./config.yaml \
 	--use-conda\
-	--cluster "qsub -pe threads {cluster.threads} \
-                      -q {cluster.queue} \
-                      -l virtual_free={cluster.virtual_free} \
-                      -l h_vmem={cluster.h_vmem} \
-                      -e {cluster.error_out_dir} \
-                      -o {cluster.std1_out_dir}" \
-	--jobs 32\
+	--jobs 80\
 	-d /home/skurscheid/data/mcf10a-hic\
 	--rerun-incomplete \
         --local-cores 4\
-	--cluster-config /home/skurscheid/breast_cancer_nucleome/cluster.json\
 	-pr\
