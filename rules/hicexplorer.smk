@@ -46,7 +46,7 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
     conda:
         "../envs/hicexplorer.yaml"
     version:
-        1
+        4
     params:
         inputBufferSize = 100000
     threads:
@@ -75,11 +75,11 @@ rule hicBuildMatrix_restrictionCutFile:
     conda:
         "../envs/hicexplorer.yaml"
     version:
-        1
-    params:
-        inputBufferSize = 100000
-    threads:
         4
+    params:
+        inputBufferSize = 400000
+    threads:
+        8
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
