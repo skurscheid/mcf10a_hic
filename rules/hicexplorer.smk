@@ -98,3 +98,24 @@ rule hicBuildMatrix_restrictionCutFile:
                 --outFileName {output.outHicMatrix} \
                 --QCfolder {output.qcFolder}
         """
+
+rule hiQC_per_batch:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        1
+    params:
+        labels = hiQCLabels(units, wildcards)
+    threads:
+        64
+    input:
+        hiQCInput(units, wildcards)
+    output:
+        directory("{tools}/{command}/{res_enzyme}/{batch}/")
+    shell:
+    """
+    hiQC --logfiles {input}\
+         --labels {params.labels}\
+         --outputFolder {output}
+    """
+    

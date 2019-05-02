@@ -20,8 +20,23 @@ def fastp_targets(units):
     return(t)
 
 def hicmatrixbuilder_targets(units):
-    """function for creating snakemake targets for executing fastp rule"""
+    """function for creating snakemake targets for executing hicmatrixbuilder rule"""
     t = []
     for index, row in units.iterrows():
         t.append(row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
+
+def hiQCInput(units, wildcards):
+    """function for fetching QC log files per batch"""
+    t = []
+    for index, row in units[units.batch == wildcards["batch"]].iterrows():
+        t.append(wildcards["base_path"] + "/" + wildcards["res_enzyme"] + "/" + row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']) + "/qc/QC.log")
+    return(t)
+
+def hiQCLabels(units, wildcards):
+    """function for fetching QC log files per batch"""
+    t = []
+    for index, row in units[units.batch == wildcards["batch"]].iterrows():
+        t.append(row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
+    return(t)
+

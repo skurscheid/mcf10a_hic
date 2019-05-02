@@ -19,12 +19,6 @@ units = pd.read_csv(config["units"], sep = "\t").set_index(["sample", "batch", "
 
 include: "scripts/helper.py"
 
-##### load additional workflow rules #####
-
-include: "rules/fastp.smk"
-include: "rules/bowtie2.smk"
-include: "rules/hicexplorer.smk"
-
 ##### build targets #####
 
 rule all:
@@ -61,6 +55,11 @@ rule all_hicbuildmatrix:
 	expand("hicexplorer/hicBuildMatrix/HindIII/{file}/qc",
                file = hicmatrixbuilder_targets(units)),
 
+rule hiQC_test_run:
+    input:
+        "hicexplorer/hiQC/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/
+        
+
 rule hicbuildmatrix_single_test_run:
     input:
         "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
@@ -72,3 +71,8 @@ rule align_one:
     input:
         "bowtie2/align/se/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ_L001_2.end1.bam",
         "bowtie2/report/se/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ_L001_2.end1.txt"
+
+##### load additional workflow rules #####
+include: "rules/fastp.smk"
+include: "rules/bowtie2.smk"
+include: "rules/hicexplorer.smk"
