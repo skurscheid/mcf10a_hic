@@ -55,9 +55,17 @@ rule all_hicbuildmatrix:
 	expand("hicexplorer/hicBuildMatrix/HindIII/{file}/qc",
                file = hicmatrixbuilder_targets(units)),
 
-rule hiQC_test_run:
+rule all_hicQC:
     input:
-        "hicexplorer/hiQC/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/
+        expand("hicexplorer/hicQC/HindIII/{batch}/",
+               batch = ["170306_NB501086_0102_HiC1_6_run4", "NB501086_0088_DTremethick_JCSMR_HiC_shZ_TGFb", 
+                        "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb", "NB501086_0100_DTremethick_HiC1_6_run3",
+                        "NB501086_0079_DTremethick_JCSMR_HiC_run1", "NB501086_0103_DTremethick_JCSMR_HiC_shZ_TGFb_run3A",
+                        "NB501086_0080_DTremethick_JCSMR_HiC_run2", "Project_SN877_0303_Max_Nekrasov_Human_Breast_HiC"])
+
+rule hicQC_test_run:
+    input:
+        "hicexplorer/hicQC/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/"
         
 
 rule hicbuildmatrix_single_test_run:
