@@ -48,12 +48,23 @@ rule all_align:
                 file = fastp_targets(units),
                 end = ["end1", "end2"])
 
-rule all_hicbuildmatrix:
+rule all_hicbuildmatrix_HindIII:
     input:	
         expand("hicexplorer/hicBuildMatrix/HindIII/{file}_hic_matrix.h5",
                file = hicmatrixbuilder_targets(units)),
 	expand("hicexplorer/hicBuildMatrix/HindIII/{file}/qc",
                file = hicmatrixbuilder_targets(units)),
+
+rule all_hicbuildmatrix_bin:
+    input:
+        expand("hicexplorer/hicBuildMatrix_bin/{bin_size}/{file}_hic_matrix.h5",
+               file = hicmatrixbuilder_targets(units),
+               bin_size = [10000, 20000, 50000, 100000]),
+        expand("hicexplorer/hicBuildMatrix_bin/{bin_size}/{file}/qc",
+               file = hicmatrixbuilder_targets(units),
+               bin_size = [10000, 20000, 50000, 100000])
+
+
 
 rule hicbuildmatrix_10k_resolution_test:
     input:
