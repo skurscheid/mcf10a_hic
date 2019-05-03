@@ -111,11 +111,13 @@ rule hicBuildMatrix:
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam"
+    log:
+        "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/log.txt"
     benchmark:
-        "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -123,7 +125,7 @@ rule hicBuildMatrix:
                 --binSize {wildcards.resolution}\
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
-                --QCfolder {output.qcFolder}
+                --QCfolder {output.qcFolder} 1>>{log} 2>>{log}
         """
 
 rule hicQC_per_batch:
