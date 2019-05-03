@@ -99,6 +99,34 @@ rule hicBuildMatrix_restrictionCutFile:
                 --QCfolder {output.qcFolder}
         """
 
+rule hicBuildMatrix:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        4
+    params:
+        inputBufferSize = 400000
+    threads:
+        16
+    input:
+        mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
+        mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam"
+    benchmark:
+        "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+    output:
+        outHicMatrix = "hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+    shell:
+        """
+        hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
+                --threads {threads} \
+                --binSize {wildcards.resolution}\
+                --inputBufferSize {params.inputBufferSize} \
+                --outFileName {output.outHicMatrix} \
+                --QCfolder {output.qcFolder}
+        """
+
+
 rule hiQC_per_batch:
     conda:
         "../envs/hicexplorer.yaml"

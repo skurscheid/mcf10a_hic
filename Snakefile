@@ -55,17 +55,12 @@ rule all_hicbuildmatrix:
 	expand("hicexplorer/hicBuildMatrix/HindIII/{file}/qc",
                file = hicmatrixbuilder_targets(units)),
 
-rule hiQC_test_run:
+rule hicbuildmatrix_10k_resolution_test:
     input:
-        "hicexplorer/hiQC/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/
-        
-
-rule hicbuildmatrix_single_test_run:
-    input:
-        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
-        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
+        "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
+        "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
 
 rule align_one:
     input:
