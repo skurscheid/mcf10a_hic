@@ -62,10 +62,13 @@ rule hicbuildmatrix_10k_resolution_test:
         "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
         "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
 
-rule align_one:
+rule all_hicQC:
     input:
-        "bowtie2/align/se/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ_L001_2.end1.bam",
-        "bowtie2/report/se/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10AshZ_L001_2.end1.txt"
+        expand("hicexplorer/hicQC/HindIII/{batch}/",
+               batch = ["170306_NB501086_0102_HiC1_6_run4", "NB501086_0088_DTremethick_JCSMR_HiC_shZ_TGFb", 
+                        "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb", "NB501086_0100_DTremethick_HiC1_6_run3",
+                        "NB501086_0079_DTremethick_JCSMR_HiC_run1", "NB501086_0103_DTremethick_JCSMR_HiC_shZ_TGFb_run3",
+                        "NB501086_0080_DTremethick_JCSMR_HiC_run2", "Project_SN877_0303_Max_Nekrasov_Human_Breast_HiC"])
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
