@@ -99,7 +99,6 @@ rule hicBuildMatrix_restrictionCutFile:
                 --QCfolder {output.qcFolder}
         """
 
-<<<<<<< HEAD
 rule hicBuildMatrix:
     conda:
         "../envs/hicexplorer.yaml"
