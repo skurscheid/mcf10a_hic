@@ -127,8 +127,6 @@ rule hicBuildMatrix:
                 --QCfolder {output.qcFolder}
         """
 
-
-
 rule hicQC_per_batch:
     conda:
         "../envs/hicexplorer.yaml"
