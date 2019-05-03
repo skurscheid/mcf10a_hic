@@ -55,12 +55,34 @@ rule all_hicbuildmatrix:
 	expand("hicexplorer/hicBuildMatrix/HindIII/{file}/qc",
                file = hicmatrixbuilder_targets(units)),
 
+<<<<<<< HEAD
 rule hicbuildmatrix_10k_resolution_test:
     input:
         "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
         "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
         "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
         "hicexplorer/hicBuildMatrix/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
+=======
+rule all_hicQC:
+    input:
+        expand("hicexplorer/hicQC/HindIII/{batch}/",
+               batch = ["170306_NB501086_0102_HiC1_6_run4", "NB501086_0088_DTremethick_JCSMR_HiC_shZ_TGFb", 
+                        "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb", "NB501086_0100_DTremethick_HiC1_6_run3",
+                        "NB501086_0079_DTremethick_JCSMR_HiC_run1", "NB501086_0103_DTremethick_JCSMR_HiC_shZ_TGFb_run3A",
+                        "NB501086_0080_DTremethick_JCSMR_HiC_run2", "Project_SN877_0303_Max_Nekrasov_Human_Breast_HiC"])
+
+rule hicQC_test_run:
+    input:
+        "hicexplorer/hicQC/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/"
+        
+
+rule hicbuildmatrix_single_test_run:
+    input:
+        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
+        "hicexplorer/hicBuildMatrix/HindIII/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
+>>>>>>> ec681803b92cc5e2b8df4c4285229da4b7e70e57
 
 rule align_one:
     input:

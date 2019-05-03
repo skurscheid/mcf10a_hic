@@ -26,14 +26,14 @@ def hicmatrixbuilder_targets(units):
         t.append(row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
 
-def hiQCInput(units, wildcards):
+def hicQCInput(wildcards):
     """function for fetching QC log files per batch"""
     t = []
     for index, row in units[units.batch == wildcards["batch"]].iterrows():
-        t.append(wildcards["base_path"] + "/" + wildcards["res_enzyme"] + "/" + row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']) + "/qc/QC.log")
+        t.append(wildcards["tool"] + "/" + "hicBuildMatrix" + "/" + wildcards["res_enzyme"] + "/" + row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']) + "/qc/QC.log")
     return(t)
 
-def hiQCLabels(units, wildcards):
+def hicQCLabels(wildcards):
     """function for fetching QC log files per batch"""
     t = []
     for index, row in units[units.batch == wildcards["batch"]].iterrows():
