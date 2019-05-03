@@ -83,12 +83,12 @@ rule hicBuildMatrix_restrictionCutFile:
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
-        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{rest_site}_rest_sites.k50.bed"
     benchmark:
-        "hicexplorer/hicBuildMatrix/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "hicexplorer/hicBuildMatrix/{sub_command}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+        outHicMatrix = "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -140,7 +140,7 @@ rule hicQC_per_batch:
     input:
         hicQCInput
     output:
-        directory("{tool}/{command}/{res_enzyme}/{batch}/")
+        directory("{tool}/{command}/{sub_command}/{batch}/")
     shell:
         """
         hicQC --logfiles {input}\
