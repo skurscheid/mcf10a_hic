@@ -66,17 +66,23 @@ rule all_hicbuildmatrix_bin:
 
 
 
-rule hicbuildmatrix_10k_resolution_test:
+rule hicbuildmatrix_100k_resolution_test:
     input:
-        "hicexplorer/hicBuildMatrix_bin/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix_bin/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix_bin/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
-        "hicexplorer/hicBuildMatrix_bin/10000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
 
 rule all_hicQC:
     input:
         expand("hicexplorer/hicQC/HindIII/{batch}/",
                batch = ["170306_NB501086_0102_HiC1_6_run4", "NB501086_0088_DTremethick_JCSMR_HiC_shZ_TGFb", 
+                        "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb", "NB501086_0100_DTremethick_HiC1_6_run3",
+                        "NB501086_0079_DTremethick_JCSMR_HiC_run1", "NB501086_0103_DTremethick_JCSMR_HiC_shZ_TGFb_run3",
+                        "NB501086_0080_DTremethick_JCSMR_HiC_run2", "Project_SN877_0303_Max_Nekrasov_Human_Breast_HiC"]),
+        expand("hicexplorer/hicQC/bin/{bin_size}/{batch}/",
+               bin_size = [20000, 50000, 100000],
+               batch = ["170306_NB501086_0102_HiC1_6_run4", "NB501086_0088_DTremethick_JCSMR_HiC_shZ_TGFb",
                         "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb", "NB501086_0100_DTremethick_HiC1_6_run3",
                         "NB501086_0079_DTremethick_JCSMR_HiC_run1", "NB501086_0103_DTremethick_JCSMR_HiC_shZ_TGFb_run3",
                         "NB501086_0080_DTremethick_JCSMR_HiC_run2", "Project_SN877_0303_Max_Nekrasov_Human_Breast_HiC"])

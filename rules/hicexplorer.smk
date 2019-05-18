@@ -85,7 +85,7 @@ rule hicBuildMatrix_restrictionCutFile:
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
         restrictionCutFile = "hicexplorer/findRestSite/hg38_{rest_site}_rest_sites.k50.bed"
     benchmark:
-        "hicexplorer/hicBuildMatrix/{sub_command}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
         qcFolder = directory("hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
@@ -107,7 +107,7 @@ rule hicBuildMatrix:
     params:
         inputBufferSize = 400000
     threads:
-        16
+        48
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam"
