@@ -144,6 +144,56 @@ rule hicQC_per_batch:
     shell:
         """
         hicQC --logfiles {input}\
-             --labels {params.labels}\
-             --outputFolder {output}
+              --labels {params.labels}\
+              --outputFolder {output}
+        """
+
+rule hicCorrelate_per_batch:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        1
+    params:
+        labels = ,
+        additional = "--plotNumbers --plotFileFormat pdf"
+    threads:
+        32
+    input:
+        h5PerBatch
+    output:
+        heatmap = "hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_heatmap.pdf",
+        scatterplot = "hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_scatterplot.pdf",
+    shell:
+        """
+        hicCorrelate --matrices {input}\
+                     --labels {params.labels}\
+                     --threads {threads}\
+                     --outFileNameHeatmap {output.heatmap}\
+                     --outFileNameScatter {output.scatterplot}
+                        
+        """
+
+rule hicCorrelate_per_sample:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        1
+    params:
+        labels = ,
+        additional = "--plotNumbers --plotFileFormat pdf"
+    threads:
+        32
+    input:
+        h5PerSample
+    output:
+        heatmap = "hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_heatmap.pdf",
+        scatterplot = "hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_scatterplot.pdf"
+    shell:
+        """
+        hicCorrelate --matrices {input}\
+                     --labels {params.labels}\
+                     --threads {threads}\
+                     --outFileNameHeatmap {output.heatmap}\
+                     --outFileNameScatter {output.scatterplot}
+                        
         """

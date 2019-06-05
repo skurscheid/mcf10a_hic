@@ -1,4 +1,4 @@
-sample	replicate	batch	lane	fq1	fq2
+sample_id	replicate	batch	lane	fq1	fq2
 MCF10ACA1	1	170306_NB501086_0102_HiC1_6_run4	L001	raw/170306_NB501086_0102_HiC1_6_run4/HiC_MCF_Cancer_1_r4/HiC_1_r4_S1_R1_001.fastq.gz	raw/170306_NB501086_0102_HiC1_6_run4/HiC_MCF_Cancer_1_r4/HiC_1_r4_S1_R2_001.fastq.gz
 MCF10ACA1	2	170306_NB501086_0102_HiC1_6_run4	L001	raw/170306_NB501086_0102_HiC1_6_run4/HiC_MCF_Cancer_2_r4/HiC_5_r4_S5_R1_001.fastq.gz	raw/170306_NB501086_0102_HiC1_6_run4/HiC_MCF_Cancer_2_r4/HiC_5_r4_S5_R2_001.fastq.gz
 MCF10AT1	1	170306_NB501086_0102_HiC1_6_run4	L001	raw/170306_NB501086_0102_HiC1_6_run4/HiC_MCF_T1_1_r4/HiC_3_r4_S3_R1_001.fastq.gz	raw/170306_NB501086_0102_HiC1_6_run4/HiC_MCF_T1_1_r4/HiC_3_r4_S3_R2_001.fastq.gz

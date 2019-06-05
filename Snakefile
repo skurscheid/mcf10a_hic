@@ -12,8 +12,8 @@ min_version("5.1.2")
 
 #configfile: "config.yaml"
 
-samples = pd.read_csv(config["samples"], sep = "\t").set_index("sample", drop=False)
-units = pd.read_csv(config["units"], sep = "\t").set_index(["sample", "batch", "lane", "replicate"], drop=False)
+samples = pd.read_csv(config["samples"], sep = "\t").set_index("sample_id", drop=False)
+units = pd.read_csv(config["units"], sep = "\t").set_index(["sample_id", "batch", "lane", "replicate"], drop=False)
 
 ##### load additional functions #####
 
@@ -64,6 +64,20 @@ rule all_hicbuildmatrix_bin:
                file = hicmatrixbuilder_targets(units),
                bin_size = [10000, 20000, 50000, 100000])
 
+
+rule test_hicCorrelate_perSample:
+    input:
+        expand("hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_{plot}.pdf",
+                sub_command = "HindIII",
+                sample = "MCF10A",
+                plot = ["heatmap", "scatterplot"])
+
+rule test_hicCorrelate_perBatch:
+    input:
+        expand("hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_{plot}.pdf",
+                sub_command = "HindIII",
+                sample = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
+                plot = ["heatmap", "scatterplot"])
 
 
 rule hicbuildmatrix_100k_resolution_test:

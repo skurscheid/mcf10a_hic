@@ -16,27 +16,41 @@ def fastp_targets(units):
     """function for creating snakemake targets for executing fastp rule"""
     t = []
     for index, row in units.iterrows():
-        t.append(row['batch'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
+        t.append(row['batch'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
 
 def hicmatrixbuilder_targets(units):
     """function for creating snakemake targets for executing hicmatrixbuilder rule"""
     t = []
     for index, row in units.iterrows():
-        t.append(row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
+        t.append(row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
 
 def hicQCInput(wildcards):
     """function for fetching QC log files per batch"""
     t = []
     for index, row in units[units.batch == wildcards["batch"]].iterrows():
-        t.append(wildcards["tool"] + "/" + wildcards["command"] + "/" + wildcards["sub_command"] + "/" + row['batch'] + "/" + row['sample'] + "/" + row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']) + "/qc/QC.log")
+        t.append(wildcards["tool"] + "/" + wildcards["command"] + "/" + wildcards["sub_command"] + "/" + row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']) + "/qc/QC.log")
     return(t)
 
 def hicQCLabels(wildcards):
     """function for fetching QC log files per batch"""
     t = []
     for index, row in units[units.batch == wildcards["batch"]].iterrows():
-        t.append(row['sample'] + "_" + row['lane'] + "_" + str(row['replicate']))
+        t.append(row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']))
+    return(t)
+
+def h5PerBatch(wildcards):
+    """function for fetching QC log files per batch"""
+    t = []
+    for index, row in units[units.batch == wildcards["batch"]].iterrows():
+        t.append("hicexplorer/hicBuildMatrix/" + wildcards["sub_command"] + "/" + row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']) + "_hic_matrix.h5")
+    return(t)
+
+def h5PerSample(wildcards):
+    """function for fetching QC log files per sample"""
+    t = []
+    for index, row in units[units.sample_id == wildcards["sample"]].iterrows():
+        t.append("hicexplorer/hicBuildMatrix/" + wildcards["sub_command"] + "/" + row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']) + "_hic_matrix.h5")
     return(t)
 
