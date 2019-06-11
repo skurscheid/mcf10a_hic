@@ -101,7 +101,7 @@ rule hicBuildMatrix_restrictionCutFile:
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
                 --outBam {output.outBam}\
-                --QCfolder {output.qcFolder} 1>>{log} 2>>{log}
+                --QCfolder {output.qcFolder} 1>{log} 2>{log}
         """
 
 rule hicBuildMatrix:
@@ -132,7 +132,7 @@ rule hicBuildMatrix:
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
                 --outBam {output.outBam}\
-                --QCfolder {output.qcFolder} 1>>{log} 2>>{log}
+                --QCfolder {output.qcFolder} 1>{log} 2>{log}
         """
 
 rule hicQC_per_batch:
