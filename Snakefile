@@ -76,7 +76,7 @@ rule test_hicCorrelate_perBatch:
     input:
         expand("hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_{plot}.pdf",
                 sub_command = "HindIII",
-                sample = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
+                batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
                 plot = ["heatmap", "scatterplot"])
 
 
