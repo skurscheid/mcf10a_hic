@@ -67,8 +67,8 @@ rule all_hicbuildmatrix_bin:
 
 rule test_hicCorrelate_perSample:
     input:
-        expand("hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_{plot}.pdf",
-                sub_command = "HindIII",
+        expand("hicexplorer/hicCorrelate/perSample/{subcommand}/{sample}_{plot}.pdf",
+                subcommand = "HindIII",
                 sample = "MCF10A",
                 plot = ["heatmap", "scatterplot"])
 

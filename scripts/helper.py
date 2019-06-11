@@ -30,7 +30,7 @@ def hicQCInput(wildcards):
     """function for fetching QC log files per batch"""
     t = []
     for index, row in units[units.batch == wildcards["batch"]].iterrows():
-        t.append(wildcards["tool"] + "/" + wildcards["command"] + "/" + wildcards["sub_command"] + "/" + row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']) + "/qc/QC.log")
+        t.append(wildcards["tool"] + "/" + wildcards["command"] + "/" + wildcards["subcommand"] + "/" + row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']) + "/qc/QC.log")
     return(t)
 
 def hicQCLabels(wildcards):
@@ -40,17 +40,35 @@ def hicQCLabels(wildcards):
         t.append(row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
 
-def h5PerBatch(wildcards):
-    """function for fetching QC log files per batch"""
-    t = []
+def h5PerBatch(units, wildcards):
+    """function for fetching h5 matrix files per batch"""
+    labels = []
+    batch = []
     for index, row in units[units.batch == wildcards["batch"]].iterrows():
-        t.append("hicexplorer/hicBuildMatrix/" + wildcards["sub_command"] + "/" + row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']) + "_hic_matrix.h5")
-    return(t)
+        labels.append(row['sample_id'])
+        batch.append("/".join(["hicexplorer/hicBuildMatrix",
+                                wildcards["subcommand"],
+                                row['batch'],
+                                row['sample_id'],
+                                row['sample_id']]) + "_" + "_".join([row['lane'], str(row['replicate']), "hic_matrix.h5"]))
+    rvals = dict()
+    rvals["labels"] = labels
+    rvals["batch"] = batch
+    return(rvals)
 
-def h5PerSample(wildcards):
-    """function for fetching QC log files per sample"""
-    t = []
+def h5PerSample(units, wildcards):
+    """function for fetching h5 matrix files per sample"""
+    labels = []
+    sample = []
     for index, row in units[units.sample_id == wildcards["sample"]].iterrows():
-        t.append("hicexplorer/hicBuildMatrix/" + wildcards["sub_command"] + "/" + row['batch'] + "/" + row['sample_id'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']) + "_hic_matrix.h5")
-    return(t)
+        labels.append(row['batch'])
+        sample.append("/".join(["hicexplorer/hicBuildMatrix",
+                                wildcards["subcommand"],
+                                row['batch'],
+                                row['sample_id'],
+                                row['sample_id']]) + row['lane'] + "_" + str(row['replicate']) + "_hic_matrix.h5")
+    rvals = dict()
+    rvals["labels"] = labels
+    rvals["samples"] = sample
+    return(rvals)
 
