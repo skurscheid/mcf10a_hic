@@ -15,6 +15,9 @@ For usage, include this in your workflow.
 
 singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
+# instantiate object for sample and label functions
+hicCorrelateParams = hicCorrelateParams()
+
 rule findRestSites:
     conda:
         "../envs/hicexplorer.yaml"
@@ -154,12 +157,12 @@ rule hicCorrelate_per_batch:
     version:
         1
     params:
-        labels = ,
+        labels = h5PerBatch(units, wildcards)["labels"],
         additional = "--plotNumbers --plotFileFormat pdf"
     threads:
         32
     input:
-        h5PerBatch
+        files = h5PerBatch(units, wildcards)["batch"]
     output:
         heatmap = "hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_heatmap.pdf",
         scatterplot = "hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_scatterplot.pdf",
@@ -179,12 +182,12 @@ rule hicCorrelate_per_sample:
     version:
         1
     params:
-        labels = ,
+        labels = h5PerSample(units, wildcards)["labels"],
         additional = "--plotNumbers --plotFileFormat pdf"
     threads:
         32
     input:
-        h5PerSample
+        files = h5PerSample(units, wildcards)["samples"]
     output:
         heatmap = "hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_heatmap.pdf",
         scatterplot = "hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_scatterplot.pdf"
