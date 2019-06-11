@@ -66,8 +66,23 @@ rule all_hicbuildmatrix_bin:
                file = hicmatrixbuilder_targets(units),
                bin_size = [10000, 20000, 50000, 100000])
 
+rule test_run_hicbuildmatrix_HindIII:
+    input:
+        expand("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.{suffix}",
+               res_enzyme = "HindIII",
+               batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
+               sample = "MCF10ATGFb",
+               lane = "L001",
+               replicate = ["1", "2"],
+               suffix = ["h5", "bam"]),
+       expand("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc",
+               res_enzyme = "HindIII",
+               batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
+               sample = "MCF10ATGFb",
+               lane = "L001",
+               replicate = ["1", "2"])
 
-rule test_hicbuildmatrix_HindIII:
+rule test_hicbuildmatrix_100kbin:
     input:
         "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
         "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1.bam",
@@ -75,8 +90,6 @@ rule test_hicbuildmatrix_HindIII:
         "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2.bam",
         "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
         "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
-
-
 
 rule test_hicCorrelate_perSample:
     input:
@@ -91,13 +104,6 @@ rule test_hicCorrelate_perBatch:
                 subcommand = "100000",
                 batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
                 plot = ["heatmap", "scatterplot"])
-
-rule hicbuildmatrix_100k_resolution_test:
-    input:
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
 
 rule all_hicQC:
     input:

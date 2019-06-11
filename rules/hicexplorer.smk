@@ -47,20 +47,23 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
     conda:
         "../envs/hicexplorer.yaml"
     version:
-        4
+        5
     params:
-        inputBufferSize = 100000
+        inputBufferSize = 400000
     threads:
-        4
+        8
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
         restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
     benchmark:
         "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+    log: 
+        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/log.txt"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+        qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc"),
+        outBam = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.bam"
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -68,8 +71,9 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
                 --threads {threads} \
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
+                --outBam = {output.outBam}\
                 --QCfolder {output.qcFolder} \
-                --doTestRun
+                --doTestRun 1>{log} 2>{log}
         """
 
 rule hicBuildMatrix_restrictionCutFile:
