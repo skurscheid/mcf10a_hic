@@ -40,35 +40,40 @@ def hicQCLabels(wildcards):
         t.append(row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
 
-def h5PerBatch(units, wildcards):
+def h5PerBatchFiles(wildcards):
     """function for fetching h5 matrix files per batch"""
-    labels = []
-    batch = []
+    files = []
     for index, row in units[units.batch == wildcards["batch"]].iterrows():
-        labels.append(row['sample_id'])
-        batch.append("/".join(["hicexplorer/hicBuildMatrix",
+        files.append("/".join(["hicexplorer",
+                                wildcards["command"],
                                 wildcards["subcommand"],
                                 row['batch'],
                                 row['sample_id'],
                                 row['sample_id']]) + "_" + "_".join([row['lane'], str(row['replicate']), "hic_matrix.h5"]))
-    rvals = dict()
-    rvals["labels"] = labels
-    rvals["batch"] = batch
-    return(rvals)
+    return(files)
 
-def h5PerSample(units, wildcards):
-    """function for fetching h5 matrix files per sample"""
+def h5PerBatchLabels(wildcards):
+    """function for fetching h5 matrix files per batch"""
     labels = []
-    sample = []
+    for index, row in units[units.batch == wildcards["batch"]].iterrows():
+        labels.append(row['sample_id'])
+    return(labels)
+
+def h5PerSampleFiles(wildcards):
+    """function for fetching h5 matrix files per sample"""
+    files = []
     for index, row in units[units.sample_id == wildcards["sample"]].iterrows():
-        labels.append(row['batch'])
-        sample.append("/".join(["hicexplorer/hicBuildMatrix",
+        files.append("/".join(["hicexplorer",
+                                wildcards["command"],
                                 wildcards["subcommand"],
                                 row['batch'],
                                 row['sample_id'],
-                                row['sample_id']]) + row['lane'] + "_" + str(row['replicate']) + "_hic_matrix.h5")
-    rvals = dict()
-    rvals["labels"] = labels
-    rvals["samples"] = sample
-    return(rvals)
+                                row['sample_id']]) + "_" + row['lane'] + "_" + str(row['replicate']) + "_hic_matrix.h5")
+    return(files)
 
+def h5PerSampleLabels(wildcards):
+    """function for fetching h5 matrix files per sample"""
+    labels = []
+    for index, row in units[units.sample_id == wildcards["sample"]].iterrows():
+        labels.append(row['batch'])
+    return(sample)

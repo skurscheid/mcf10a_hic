@@ -15,8 +15,6 @@ For usage, include this in your workflow.
 
 singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
-# instantiate object for sample and label functions
-hicCorrelateParams = hicCorrelateParams()
 
 rule findRestSites:
     conda:
@@ -157,18 +155,18 @@ rule hicCorrelate_per_batch:
     version:
         1
     params:
-        labels = h5PerBatch(units, wildcards)["labels"],
+        labels = h5PerBatchLabels,
         additional = "--plotNumbers --plotFileFormat pdf"
     threads:
         32
     input:
-        files = h5PerBatch(units, wildcards)["batch"]
+        files = h5PerBatchFiles
     output:
-        heatmap = "hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_heatmap.pdf",
-        scatterplot = "hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_scatterplot.pdf",
+        heatmap = "hicexplorer/hicCorrelate/perBatch/{command}/{subcommand}/{batch}_heatmap.pdf",
+        scatterplot = "hicexplorer/hicCorrelate/perBatch/{command}/{subcommand}/{batch}_scatterplot.pdf",
     shell:
         """
-        hicCorrelate --matrices {input}\
+        hicCorrelate --matrices {input.files}\
                      --labels {params.labels}\
                      --threads {threads}\
                      --outFileNameHeatmap {output.heatmap}\
@@ -182,18 +180,18 @@ rule hicCorrelate_per_sample:
     version:
         1
     params:
-        labels = h5PerSample(units, wildcards)["labels"],
+        labels = h5PerSampleLabels,
         additional = "--plotNumbers --plotFileFormat pdf"
     threads:
         32
     input:
-        files = h5PerSample(units, wildcards)["samples"]
+        files = h5PerSampleFiles
     output:
-        heatmap = "hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_heatmap.pdf",
-        scatterplot = "hicexplorer/hicCorrelate/perSample/{sub_command}/{sample}_scatterplot.pdf"
+        heatmap = "hicexplorer/hicCorrelate/perSample/{command}/{subcommand}/{sample}_heatmap.pdf",
+        scatterplot = "hicexplorer/hicCorrelate/perSample/{command}/{subcommand}/{sample}_scatterplot.pdf"
     shell:
         """
-        hicCorrelate --matrices {input}\
+        hicCorrelate --matrices {input.files}\
                      --labels {params.labels}\
                      --threads {threads}\
                      --outFileNameHeatmap {output.heatmap}\

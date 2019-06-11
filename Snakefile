@@ -67,18 +67,17 @@ rule all_hicbuildmatrix_bin:
 
 rule test_hicCorrelate_perSample:
     input:
-        expand("hicexplorer/hicCorrelate/perSample/{subcommand}/{sample}_{plot}.pdf",
+        expand("hicexplorer/hicCorrelate/perSample/hicBuildMatrix/{subcommand}/{sample}_{plot}.pdf",
                 subcommand = "HindIII",
                 sample = "MCF10A",
                 plot = ["heatmap", "scatterplot"])
 
 rule test_hicCorrelate_perBatch:
     input:
-        expand("hicexplorer/hicCorrelate/perBatch/{sub_command}/{batch}_{plot}.pdf",
-                sub_command = "HindIII",
+        expand("hicexplorer/hicCorrelate/perBatch/hicBuildMatrix_bin/{subcommand}/{batch}_{plot}.pdf",
+                subcommand = "50000",
                 batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
                 plot = ["heatmap", "scatterplot"])
-
 
 rule hicbuildmatrix_100k_resolution_test:
     input:
