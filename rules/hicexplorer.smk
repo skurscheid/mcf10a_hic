@@ -87,8 +87,11 @@ rule hicBuildMatrix_restrictionCutFile:
         restrictionCutFile = "hicexplorer/findRestSite/hg38_{rest_site}_rest_sites.k50.bed"
     benchmark:
         "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+    log:
+        "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/log.txt"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        outBam = "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}.bam",
         qcFolder = directory("hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
@@ -97,7 +100,8 @@ rule hicBuildMatrix_restrictionCutFile:
                 --threads {threads} \
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
-                --QCfolder {output.qcFolder}
+                --outBam {output.outBam}\
+                --QCfolder {output.qcFolder} 1>>{log} 2>>{log}
         """
 
 rule hicBuildMatrix:
@@ -108,7 +112,7 @@ rule hicBuildMatrix:
     params:
         inputBufferSize = 400000
     threads:
-        48
+        8
     input:
         mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam"
@@ -118,6 +122,7 @@ rule hicBuildMatrix:
         "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
+        outBam = "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}.bam",
         qcFolder = directory("hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
@@ -126,6 +131,7 @@ rule hicBuildMatrix:
                 --binSize {wildcards.resolution}\
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
+                --outBam {output.outBam}\
                 --QCfolder {output.qcFolder} 1>>{log} 2>>{log}
         """
 

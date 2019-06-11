@@ -52,6 +52,8 @@ rule all_hicbuildmatrix_HindIII:
     input:	
         expand("hicexplorer/hicBuildMatrix/HindIII/{file}_hic_matrix.h5",
                file = hicmatrixbuilder_targets(units)),
+        expand("hicexplorer/hicBuildMatrix/HindIII/{file}.bam",
+               file = hicmatrixbuilder_targets(units)),
 	expand("hicexplorer/hicBuildMatrix/HindIII/{file}/qc",
                file = hicmatrixbuilder_targets(units)),
 
@@ -65,6 +67,17 @@ rule all_hicbuildmatrix_bin:
                bin_size = [10000, 20000, 50000, 100000])
 
 
+rule test_hicbuildmatrix_HindIII:
+    input:
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1.bam",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2.bam",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
+        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
+
+
+
 rule test_hicCorrelate_perSample:
     input:
         expand("hicexplorer/hicCorrelate/perSample/hicBuildMatrix/{subcommand}/{sample}_{plot}.pdf",
@@ -75,7 +88,7 @@ rule test_hicCorrelate_perSample:
 rule test_hicCorrelate_perBatch:
     input:
         expand("hicexplorer/hicCorrelate/perBatch/hicBuildMatrix_bin/{subcommand}/{batch}_{plot}.pdf",
-                subcommand = "50000",
+                subcommand = "100000",
                 batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
                 plot = ["heatmap", "scatterplot"])
 
