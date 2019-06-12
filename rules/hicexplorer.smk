@@ -57,13 +57,13 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
         mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
         restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
     benchmark:
-        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/benchmark/times.tsv"
     log: 
-        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/log.txt"
+        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/log.txt"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc"),
-        outBam = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.bam"
+        outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/qc"),
+        outBam = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.bam"
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -71,7 +71,7 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
                 --threads {threads} \
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
-                --outBam = {output.outBam}\
+                --outBam {output.outBam}\
                 --QCfolder {output.qcFolder} \
                 --doTestRun 1>{log} 2>{log}
         """
@@ -95,7 +95,6 @@ rule hicBuildMatrix_restrictionCutFile:
         "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/log.txt"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        outBam = "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}.bam",
         qcFolder = directory("hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
@@ -104,11 +103,10 @@ rule hicBuildMatrix_restrictionCutFile:
                 --threads {threads} \
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
-                --outBam {output.outBam}\
                 --QCfolder {output.qcFolder} 1>{log} 2>{log}
         """
 
-rule hicBuildMatrix:
+rule hicBuildMatrix_bin:
     conda:
         "../envs/hicexplorer.yaml"
     version:
@@ -126,7 +124,6 @@ rule hicBuildMatrix:
         "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
     output:
         outHicMatrix = "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        outBam = "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}.bam",
         qcFolder = directory("hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
     shell:
         """
@@ -135,7 +132,6 @@ rule hicBuildMatrix:
                 --binSize {wildcards.resolution}\
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
-                --outBam {output.outBam}\
                 --QCfolder {output.qcFolder} 1>{log} 2>{log}
         """
 

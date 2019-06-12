@@ -68,7 +68,7 @@ rule all_hicbuildmatrix_bin:
 
 rule test_run_hicbuildmatrix_HindIII:
     input:
-        expand("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.{suffix}",
+        expand("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.{suffix}",
                res_enzyme = "HindIII",
                batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
                sample = "MCF10ATGFb",
