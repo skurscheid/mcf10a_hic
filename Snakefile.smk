@@ -41,11 +41,20 @@ rule all_trim:
 
 rule all_align:
     input:
-        expand("bowtie2/align/se/{file}.{end}.bam",
+        expand("bowtie2_rerun/align/se/{file}.{end}.bam",
                 file = fastp_targets(units),
                 end = ["end1", "end2"]),
-        expand("bowtie2/report/se/{file}.{end}.txt",
+        expand("bowtie2_rerun/report/se/{file}.{end}.txt",
                 file = fastp_targets(units),
+                end = ["end1", "end2"])
+
+rule test_align_rerun:
+    input:
+        expand("bowtie2/align/se/{file}.{end}.bam",
+                file = "NB501086_0079_DTremethick_JCSMR_HiC_run1/MCF10ACA1_L001_1",
+                end = ["end1", "end2"]),
+        expand("bowtie2/report/se/{file}.{end}.txt",
+                file = "NB501086_0079_DTremethick_JCSMR_HiC_run1/MCF10ACA1_L001_1",
                 end = ["end1", "end2"])
 
 rule all_hicbuildmatrix_HindIII:

@@ -44,3 +44,29 @@ rule bowtie2_se:
                     --met-file {output.metrics}\
             | samtools view -Sb - > {output.bam}
         """
+
+rule bowtie2_se_rerun:
+    """ runs alignment of single-end fastq file, modified parameters specific for HiC data"""
+    version:
+        1
+    conda:
+        "../envs/fastqProcessing.yaml"
+    threads:
+        8
+    params:
+        index = get_index("gdu", config),
+        cli_params = "--reorder"
+    input:
+        fq = "fastp/trimmed/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz"
+    output:
+        bam = "bowtie2_rerun/align/se/{batch}/{sample}_{lane}_{replicate}.{end}.bam",
+        metrics = "bowtie2_rerun/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.txt"
+    shell:
+        """
+            unset PERL5LIB; bowtie2 {params.cli_params}\
+                    -p {threads}\
+                    -x {params.index}\
+                    -U {input.fq}\
+                    --met-file {output.metrics}\
+            | samtools view -Shb - > {output.bam}
+        """
