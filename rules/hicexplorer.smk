@@ -76,6 +76,40 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
                 --doTestRun 1>{log} 2>{log}
         """
 
+rule hicBuildMatrix_bin_test_run:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        1
+    params:
+        inputBufferSize = 400000,
+        restrictionSequence = "AAGCTT"
+    threads:
+        8
+    input:
+        mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
+        mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam"
+    benchmark:
+        "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/benchmark/times.tsv"
+    log:
+        "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/log.txt"
+    output:
+        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/qc"),
+        outBam = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.bam"
+    shell:
+        """
+        hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
+                --threads {threads}\
+                --restrictionSequence {params.restrictionSequence}\
+                --binSize {wildcards.resolution}\
+                --inputBufferSize {params.inputBufferSize} \
+                --outFileName {output.outHicMatrix} \
+                --outBam {output.outBam}\
+                --QCfolder {output.qcFolder} \
+                --doTestRun 1>{log} 2>{log}
+        """
+
 rule hicBuildMatrix_restrictionCutFile:
     conda:
         "../envs/hicexplorer.yaml"

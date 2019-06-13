@@ -82,14 +82,15 @@ rule test_run_hicbuildmatrix_HindIII:
     #            lane = "L001",
     #            replicate = ["1", "2"])
 
-rule test_hicbuildmatrix_100kbin:
+rule test_run_hicbuildmatrix_bin:
     input:
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1.bam",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2_hic_matrix.h5",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2.bam",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_1/qc",
-        "hicexplorer/hicBuildMatrix_bin/100000/NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb/MCF10ATGFb/MCF10ATGFb_L001_2/qc"
+        expand("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.{suffix}",
+               resolution = "10000",
+               batch = "NB501086_0064_DTremethick_JCSMR_HiC_shZ_TGFb",
+               sample = "MCF10ATGFb",
+               lane = "L001",
+               replicate = ["1", "2"],
+               suffix = ["h5", "bam"])
 
 rule test_hicCorrelate_perSample:
     input:
