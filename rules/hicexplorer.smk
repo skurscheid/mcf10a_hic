@@ -253,5 +253,5 @@ rule hicSumMatrices:
         matrix = "hicexplorer/hicSumMatrices/{command}/{subcommand}/{sample}.h5"
     shell:
         """
-            hicSumMatrices --matrices {input.files} {output.matrix}
+            hicSumMatrices --matrices {input.files} --outFileName {output.matrix}
         """
