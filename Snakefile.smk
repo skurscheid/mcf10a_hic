@@ -75,6 +75,13 @@ rule all_hicbuildmatrix_bin:
                file = hicmatrixbuilder_targets(units),
                bin_size = [10000, 20000, 50000, 100000])
 
+rule all_hicSumMatrices_bin:
+    input:
+        expand("hicexplorer/hicSumMatrices/hicBuildMatrix_bin/{bin_size}/{sample}.h5",
+               sample = samples['sample_id'].unique().tolist(),
+               bin_size = [10000]),
+
+
 rule test_run_hicbuildmatrix_HindIII:
     input:
         expand("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.{suffix}",

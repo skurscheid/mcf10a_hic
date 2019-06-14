@@ -238,3 +238,20 @@ rule hicCorrelate_per_sample:
                      --outFileNameScatter {output.scatterplot}
                         
         """
+
+rule hicSumMatrices:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        1
+    params:
+    threads:
+        1
+    input:
+        files = h5PerSampleFiles
+    output:
+        matrix = "hicexplorer/hicSumMatrices/{command}/{subcommand}/{sample}.h5"
+    shell:
+        """
+            hicSumMatrices --matrices {input.files} {output.matrix}
+        """
