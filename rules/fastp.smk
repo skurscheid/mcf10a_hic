@@ -17,6 +17,13 @@ def get_fastq(wildcards):
     """ returns fastq files for given sample """
     return units.loc[(wildcards["sample"], wildcards["batch"], wildcards["lane"], int(wildcards["replicate"])), ["fq1", "fq2"]].dropna()
 
+def get_fastq_se(wildcards):
+    """ returns fastq files for given sample """
+    if (wildcards["end"] == "end1"):
+      return units.loc[(wildcards["sample"], wildcards["batch"], wildcards["lane"], int(wildcards["replicate"])), ["fq1"]].dropna()
+    else:
+      return units.loc[(wildcards["sample"], wildcards["batch"], wildcards["lane"], int(wildcards["replicate"])), ["fq2"]].dropna()
+
 singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
 rule run_fastp_pe:
@@ -44,11 +51,10 @@ rule run_fastp_se:
     threads:
         1
     input:
-        end1 = get_fastq[0],
-        end2 = get_fastq[1]
+        get_fastq_se
     output:
         trimmed = "fastp/trimmed/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz",
         report_html = "fastp/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastp.html",
         report_json = "fastp/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastp.json"
     shell:
-        "fastp -i {input[wildcards["end"]]]} -o {output.trimmed} --html {output.report_html} --json {output.report_json} --thread {threads}"
+        "fastp -i {input[0]} -o {output.trimmed} --html {output.report_html} --json {output.report_json} --thread {threads}"

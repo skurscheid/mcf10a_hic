@@ -81,6 +81,11 @@ rule all_hicSumMatrices_bin:
                sample = samples['sample_id'].unique().tolist(),
                bin_size = [10000]),
 
+rule all_hicSumMatrices_HindIII:
+    input:
+        expand("hicexplorer/hicSumMatrices/hicBuildMatrix/{bin_size}/{sample}.h5",
+               sample = samples['sample_id'].unique().tolist(),
+               bin_size = "HindIII"),
 
 rule test_run_hicbuildmatrix_HindIII:
     input:
