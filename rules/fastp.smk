@@ -44,10 +44,11 @@ rule run_fastp_se:
     threads:
         1
     input:
-        get_fastq
+        end1 = get_fastq[0],
+        end2 = get_fastq[1]
     output:
         trimmed = "fastp/trimmed/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz",
         report_html = "fastp/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastp.html",
         report_json = "fastp/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.fastp.json"
     shell:
-        "fastp -i {input[0]} -o {output.trimmed} --html {output.report_html} --json {output.report_json} --thread {threads}"
+        "fastp -i {input[wildcards["end"]]]} -o {output.trimmed} --html {output.report_html} --json {output.report_json} --thread {threads}"
