@@ -41,7 +41,13 @@ rule run_fastp_pe:
         report_html = "fastp/report/pe/{batch}/{sample}_{lane}_{replicate}.fastp.html",
         report_json = "fastp/report/pe/{batch}/{sample}_{lane}_{replicate}.fastp.json"
     shell:
-        "fastp -i {input[0]} -I {input[1]} -o {output.trimmed_read1} -O {output.trimmed_read2} --html {output.report_html} --json {output.report_json} --thread {threads}"
+        """
+           fastp -i {input[0]} -I {input[1]} -o {output.trimmed_read1} -O {output.trimmed_read2}\
+                 --html {output.report_html}\
+                 --json {output.report_json}\
+                 --detect_adapter_for_pe\
+                 --thread {threads}
+        """
 
 rule run_fastp_se:
     conda:
