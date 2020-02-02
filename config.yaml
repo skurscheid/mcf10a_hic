@@ -1,0 +1,14 @@
+samples: samples.tsv
+units: units.tsv
+
+params:
+  hicexplorer:
+    genome_fasta:
+      shiny: ""
+      gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/genome.fa"
+  bowtie2:
+    cli_params: "--reorder --local --rdg 6,4 --rfg 6,4"
+    index:
+      shiny: ""
+      gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
+  fastp: ""
