@@ -35,6 +35,15 @@ rule all_trim:
                 end = ["1", "2"],
                 suffix = ["json", "html"])
 
+rule all_align:
+    input:
+        expand("bowtie2/align/se/{file}_{end}.bam",
+                file = list(runTable["Run"])[0],
+                end = ["1", "2"]),
+        expand("bowtie2/report/se/{file}_{end}.txt",
+                file = list(runTable["Run"])[0],
+                end = ["1", "2"]),
+
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
 include: "rules/bowtie2.smk"

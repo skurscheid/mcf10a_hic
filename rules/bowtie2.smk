@@ -1,6 +1,6 @@
 __author__ = "Sebastian Kurscheid (sebastian.kurscheid@anu.edu.au)"
 __license__ = "MIT"
-__date__ = "2019-04-08"
+__date__ = "2020-02-04"
 
 # vim: syntax=python tabstop=4 expandtab
 # coding: utf-8
@@ -26,13 +26,15 @@ rule bowtie2_se:
     threads:
         8
     params:
-        index = get_index("gdu", config),
+        index = get_index("gadi", config),
         cli_params = config['params']['bowtie2']['cli_params']
+    log:
+        log = "logs/bowtie2/{sample}_{end}.log",
+        metrics = "bowtie2/report/se/{sample}_{end}.txt"
     input:
-        fq = "fastp/trimmed/pe/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz"
+        fq = "fastp/trimmed/se/{sample}_{end}.fastq.gz"
     output:
-        bam = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.{end}.bam",
-        metrics = "bowtie2/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.txt"
+        bam = "bowtie2/align/se/{sample}_{end}.bam"
     shell:
         """
             unset PERL5LIB; bowtie2\
@@ -42,7 +44,8 @@ rule bowtie2_se:
                     {params.cli_params}\
                     --rg-id {wildcards.sample}:{wildcards.batch}\
                     --rg "replicate:{wildcards.replicate}"\
-                    --met-file {output.metrics}\
+                    --met-file {log.metrics}\
+                    2 >> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
 
@@ -57,11 +60,14 @@ rule bowtie2_se_rerun:
     params:
         index = get_index("gdu", config),
         cli_params = "--reorder"
+    log:
+        log = "logs/bowtie2_se_rerun/{sample}_{end}.log",
+        metrics = "bowtie2_se_rerun/report/se/{sample}_{end}.txt"
     input:
-        fq = "fastp/trimmed/pe/{batch}/{sample}_{lane}_{replicate}.{end}.fastq.gz"
+        fq = "fastp/trimmed/pe/{sample}_{end}.fastq.gz"
     output:
-        bam = "bowtie2_rerun/align/se/{batch}/{sample}_{lane}_{replicate}.{end}.bam",
-        metrics = "bowtie2_rerun/report/se/{batch}/{sample}_{lane}_{replicate}.{end}.txt"
+        bam = "bowtie2_rerun/align/se/{sample}_{end}.bam",
+        metrics = "bowtie2_rerun/report/se/{sample}_{end}.txt"
     shell:
         """
             unset PERL5LIB; bowtie2\
@@ -69,6 +75,7 @@ rule bowtie2_se_rerun:
                     -p {threads}\
                     -U {input.fq}\
                     {params.cli_params}\
-                    --met-file {output.metrics}\
+                    --met-file {log.metrics}\
+                    2 >> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
