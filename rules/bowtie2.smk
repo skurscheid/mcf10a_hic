@@ -42,8 +42,7 @@ rule bowtie2_se:
                     -p {threads}\
                     -U {input.fq}\
                     {params.cli_params}\
-                    --rg-id {wildcards.sample}:{wildcards.batch}\
-                    --rg "replicate:{wildcards.replicate}"\
+                    --rg-id {wildcards.sample}\
                     --met-file {log.metrics}\
                     2 >> {log.log}\
             | samtools view -Shb - > {output.bam}

@@ -6,9 +6,17 @@ params:
     genome_fasta:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/genome.fa"
+      raijin: "/short/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/genome.fa"
+      gadi: "/scratch/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/genome.fa"
+    hicBuildMatrix:
+      restrictionSequence: "AAGCTT"
+      danglingSequence: "AGCT"
+      genomeAssembly: "GRCh38"
   bowtie2:
     cli_params: "--reorder --local --rdg 6,4 --rfg 6,4"
     index:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
+      raijin: "/short/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
+      gadi: "/scratch/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
   fastp: ""

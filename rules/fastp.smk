@@ -19,7 +19,7 @@ rule run_fastp_se:
     version:
         "2"
     threads:
-        1
+        4
     input:
         fastq = "raw/{sample}_{end}.fastq.gz"
     output:
