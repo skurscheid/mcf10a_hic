@@ -29,11 +29,11 @@ rule all_trim:
     input:
         expand("fastp/trimmed/se/{file}_{end}.fastq.gz",
                 file = list(runTable["Run"])[0],
-                end = ["1", "2"])),
+                end = ["1", "2"]),
         expand("fastp/report/se/{file}_{end}.fastp.{suffix}",
                 file = list(runTable["Run"])[0],
-                end = ["1", "2"]),
-                suffix = ["json", "html"]))
+                end = ["1", "2"],
+                suffix = ["json", "html"])
 
 rule all_align:
     input:
