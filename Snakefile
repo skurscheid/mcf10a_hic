@@ -12,8 +12,7 @@ min_version("5.1.2")
 
 #configfile: "config.yaml"
 
-samples = pd.read_csv(config["samples"], sep = "\t").set_index("sample_id", drop=False)
-units = pd.read_csv(config["units"], sep = "\t").set_index(["sample_id", "batch", "lane", "replicate"], drop=False)
+runTable = pd.read_csv("SraRunTable.txt", sep = ",")
 
 ##### load additional functions #####
 
@@ -28,16 +27,13 @@ rule all:
 
 rule all_trim:
     input:
-        expand("fastp/trimmed/se/{file}.end1.fastq.gz",
-                file = fastp_targets(units)),
-        expand("fastp/trimmed/se/{file}.end2.fastq.gz",
-                file = fastp_targets(units)),
-        expand("fastp/report/se/{file}.end1.fastp.{suffix}",
-                file = fastp_targets(units),
-                suffix = ["json", "html"]),
-        expand("fastp/report/se/{file}.end2.fastp.{suffix}",
-                file = fastp_targets(units),
-                suffix = ["json", "html"])
+        expand("fastp/trimmed/se/{file}_{end}.fastq.gz",
+                file = list(runTable["Run"][0])
+                end = ["1", "2"])),
+        expand("fastp/report/se/{file}_{end}.fastp.{suffix}",
+                file = list(runTable["Run"][0]),
+                end = ["1", "2"]),
+                suffix = ["json", "html"]))
 
 rule all_align:
     input:
@@ -46,15 +42,6 @@ rule all_align:
                 end = ["end1", "end2"]),
         expand("bowtie2/report/se/{file}.{end}.txt",
                 file = fastp_targets(units),
-                end = ["end1", "end2"])
-
-rule test_align_rerun:
-    input:
-        expand("bowtie2_rerun/align/se/{file}.{end}.bam",
-                file = "NB501086_0079_DTremethick_JCSMR_HiC_run1/MCF10ACA1_L001_1",
-                end = ["end1", "end2"]),
-        expand("bowtie2_rerun/report/se/{file}.{end}.txt",
-                file = "NB501086_0079_DTremethick_JCSMR_HiC_run1/MCF10ACA1_L001_1",
                 end = ["end1", "end2"])
 
 rule all_hicbuildmatrix_HindIII:
