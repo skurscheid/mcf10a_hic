@@ -29,12 +29,12 @@ rule bowtie2_se_global:
         index = get_index("gadi", config),
         cli_params_global = config['params']['bowtie2']['cli_params_global']
     log:
-        log = "logs/bowtie2_global/{sample}_{end}.log"
+        log = "logs/fastp/{biosample}/{replicate}/{run}_{end}.log"
     input:
-        fq = "fastp/trimmed/se/{sample}_{end}.fastq.gz"
+        fq = "fastp/trimmed/se/{biosample}/{replicate}/{run}_{end}.fastq.gz"
     output:
-        bam = "bowtie2/align_global/se/{sample}_{end}.bam",
-        unmapped = "bowtie2/align_global/se/{sample}_{end}.unmap.fastq"
+        bam = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.bam",
+        unmapped = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
     shell:
         """
             unset PERL5LIB; bowtie2\
@@ -49,7 +49,25 @@ rule bowtie2_se_global:
             | samtools view -Shb - > {output.bam}
         """
 
-rule bowtie2_se_rerun:
+rule cutsite_trimming:
+    """trims potentially chimeric reads prior to second alignment"""
+    version:
+        1
+    params:
+        hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
+        cutsite = "AAGCTT" #HindIII
+    log:
+        log = "logs/cutsite_trimming/{biosample}/{replicate}/{run}_{end}.log"
+    input:
+        rules.bowtie2_se_global.output.unmapped
+    output:
+        cutsite_trimmed = "cutsite_trimming/{sample}"
+    shell:
+        """ 
+            {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output}
+        """
+
+rule bowtie2_se_local:
     """ runs alignment of single-end fastq file, modified parameters specific for HiC data"""
     version:
         1
