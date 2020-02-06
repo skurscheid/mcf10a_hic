@@ -19,7 +19,7 @@ def get_index(machine, config):
 
 singularity: "docker://skurscheid/snakemake_baseimage:0.2"
 
-rule bowtie2_se:
+rule bowtie2_se_global:
     """ runs alignment of single-end fastq file, modified parameters specific for HiC data"""
     conda:
         "../envs/fastqProcessing.yaml"
@@ -27,14 +27,14 @@ rule bowtie2_se:
         8
     params:
         index = get_index("gadi", config),
-        cli_params = config['params']['bowtie2']['cli_params']
+        cli_params_global = config['params']['bowtie2']['cli_params_global']
     log:
-        log = "logs/bowtie2/{sample}_{end}.log",
-        metrics = "bowtie2/report/se/{sample}_{end}.txt"
+        log = "logs/bowtie2_global/{sample}_{end}.log"
     input:
         fq = "fastp/trimmed/se/{sample}_{end}.fastq.gz"
     output:
-        bam = "bowtie2/align/se/{sample}_{end}.bam"
+        bam = "bowtie2/align_global/se/{sample}_{end}.bam",
+        unmapped = "bowtie2/align_global/se/{sample}_{end}.unmap.fastq"
     shell:
         """
             unset PERL5LIB; bowtie2\
@@ -42,8 +42,9 @@ rule bowtie2_se:
                     -p {threads}\
                     -U {input.fq}\
                     {params.cli_params}\
-                    --rg-id {wildcards.sample}\
-                    --met-file {log.metrics}\
+                    --un {output.unmapped}\
+                    -rg-id BMG\
+                    --rg SM:{wildcards.sample}\
                     2 >> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
@@ -57,11 +58,10 @@ rule bowtie2_se_rerun:
     threads:
         8
     params:
-        index = get_index("gdu", config),
-        cli_params = "--reorder"
+        index = get_index("gadi", config),
+        cli_params = config['params']['bowtie2']['cli_params_local']
     log:
-        log = "logs/bowtie2_se_rerun/{sample}_{end}.log",
-        metrics = "bowtie2_se_rerun/report/se/{sample}_{end}.txt"
+        log = "logs/bowtie2_local//{sample}_{end}.log"
     input:
         fq = "fastp/trimmed/pe/{sample}_{end}.fastq.gz"
     output:
