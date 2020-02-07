@@ -43,8 +43,7 @@ rule bowtie2_se:
                     -U {input.fq}\
                     {params.cli_params}\
                     --rg-id {wildcards.sample}\
-                    --met-file {log.metrics}\
-                    2 >> {log.log}\
+                    2>>{log.log}\
             | samtools view -Shb - > {output.bam}
         """
 
@@ -74,7 +73,6 @@ rule bowtie2_se_rerun:
                     -p {threads}\
                     -U {input.fq}\
                     {params.cli_params}\
-                    --met-file {log.metrics}\
-                    2 >> {log.log}\
+                    2>>{log.log}\
             | samtools view -Shb - > {output.bam}
         """
