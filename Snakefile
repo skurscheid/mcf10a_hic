@@ -41,13 +41,18 @@ rule all_align_global:
                 file = make_targets_from_runTable(runTable),
                 end = ["1", "2"]),
         expand("bowtie2/align_global/se/{file}_{end}.unmap.fastq",
-        )
+                file = make_targets_from_runTable(runTable),
+                end = ["1", "2"])
 
 rule all_align_local:
     input:
-        expand("bowtie2/align/se/{file}_{end}.bam",
-                file = make_targets_from_runTable(runTable),
+        expand("bowtie2/align_local/se/{file}_{end}.bam",
+                file = make_targets_from_runTable(runTable)[3],
                 end = ["1", "2"]),
+        expand("bowtie2/align_local/se/{file}_{end}.unmap.fastq",
+                file = make_targets_from_runTable(runTable)[3],
+                end = ["1", "2"])
+
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"

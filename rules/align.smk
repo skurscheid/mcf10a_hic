@@ -41,10 +41,10 @@ rule bowtie2_se_global:
                     -x {params.index}\
                     -p {threads}\
                     -U {input.fq}\
-                    {params.cli_params}\
+                    {params.cli_params_global}\
                     --un {output.unmapped}\
                     -rg-id BMG\
-                    --rg SM:{wildcards.sample}\
+                    --rg SM:{wildcards.biosample}:{wildcards.run}\
                     2 >> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
@@ -77,7 +77,7 @@ rule bowtie2_se_local:
         8
     params:
         index = get_index("gadi", config),
-        cli_params = config['params']['bowtie2']['cli_params_local']
+        cli_params_local = config['params']['bowtie2']['cli_params_local']
     log:
         log = "logs/bowtie2_local/{biosample}/{replicate}/{run}_{end}.log"
     input:
@@ -91,10 +91,10 @@ rule bowtie2_se_local:
                     -x {params.index}\
                     -p {threads}\
                     -U {input.fq}\
-                    {params.cli_params}\
+                    {params.cli_params_local}\
                     --un {output.unmapped}\
                     -rg-id BMG\
-                    --rg SM:{wildcards.sample}\
+                    --rg SM:{wildcards.biosample}:{wildcards:run}\
                     2 >> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
