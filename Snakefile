@@ -27,26 +27,26 @@ rule all:
 
 rule all_trim:
     input:
-        expand("fastp/trimmed/se/{biosample}/{replicate}/{run}_{end}.fastq.gz",
-                file = list(runTable["Run"])[0],
+        expand("fastp/trimmed/se/{file}_{end}.fastq.gz",
+                file = make_targets_from_runTable(runTable),
                 end = ["1", "2"]),
-        expand("fastp/report/se/{biosample}/{replicate}/{run}_{end}.fastp.{suffix}",
-                file = list(runTable["Run"])[0],
+        expand("fastp/report/se/{file}_{end}.fastp.{suffix}",
+                file = make_targets_from_runTable(runTable),
                 end = ["1", "2"],
                 suffix = ["json", "html"])
 
 rule all_align_global:
     input:
-        expand("bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.bam",
-                file = list(runTable["Run"])[0],
+        expand("bowtie2/align_global/se/{file}_{end}.bam",
+                file = make_targets_from_runTable(runTable),
                 end = ["1", "2"]),
-        expand("bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq",
+        expand("bowtie2/align_global/se/{file}_{end}.unmap.fastq",
         )
 
 rule all_align_local:
     input:
         expand("bowtie2/align/se/{file}_{end}.bam",
-                file = list(runTable["Run"])[0],
+                file = make_targets_from_runTable(runTable),
                 end = ["1", "2"]),
 
 ##### load additional workflow rules #####
