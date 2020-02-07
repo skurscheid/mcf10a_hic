@@ -29,12 +29,12 @@ rule bowtie2_se_global:
         index = get_index("gadi", config),
         cli_params_global = config['params']['bowtie2']['cli_params_global']
     log:
-        log = "logs/fastp/{biosample}/{replicate}/{run}_{end}.log"
+        log = "logs/bowtie2_global/{biosample}/{replicate}/{run}_{end}.log"
     input:
         fq = "fastp/trimmed/se/{biosample}/{replicate}/{run}_{end}.fastq.gz"
     output:
-        bam = temp("bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.bam"),
-        unmapped = temp("bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq")
+        bam = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.bam",
+        unmapped = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
     shell:
         """
             unset PERL5LIB; bowtie2\
@@ -61,7 +61,7 @@ rule cutsite_trimming:
     input:
         rules.bowtie2_se_global.output.unmapped
     output:
-        cutsite_trimmed = temp("cutsite_trimming/{biosample}/{replicate}/{run}_{end}.fastq")
+        cutsite_trimmed = "cutsite_trimming/{biosample}/{replicate}/{run}_{end}.fastq"
     shell:
         """ 
             {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output}
@@ -83,8 +83,8 @@ rule bowtie2_se_local:
     input:
         fq = rules.cutsite_trimming.output
     output:
-        bam = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.bam"),
-        unmapped = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq")
+        bam = "bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.bam",
+        unmapped = "bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
     shell:
         """
             unset PERL5LIB; bowtie2\
