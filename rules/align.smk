@@ -43,9 +43,9 @@ rule bowtie2_se_global:
                     -U {input.fq}\
                     {params.cli_params_global}\
                     --un {output.unmapped}\
-                    -rg-id BMG\
+                    --rg-id BMG\
                     --rg SM:{wildcards.biosample}:{wildcards.run}\
-                    2 >> {log.log}\
+                    2>> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
 
@@ -93,8 +93,8 @@ rule bowtie2_se_local:
                     -U {input.fq}\
                     {params.cli_params_local}\
                     --un {output.unmapped}\
-                    -rg-id BMG\
-                    --rg SM:{wildcards.biosample}:{wildcards:run}\
-                    2 >> {log.log}\
+                    --rg-id BML\
+                    --rg SM:{wildcards.biosample}:{wildcards.run}\
+                    2>> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
