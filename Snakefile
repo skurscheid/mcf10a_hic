@@ -12,7 +12,7 @@ min_version("5.1.2")
 
 #configfile: "config.yaml"
 
-runTable = pd.read_csv("SraRunTable.tsv", sep = ",")
+runTable = pd.read_csv("SraRunTable.csv", sep = ",")
 
 ##### load additional functions #####
 

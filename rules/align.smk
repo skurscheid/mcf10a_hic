@@ -33,8 +33,8 @@ rule bowtie2_se_global:
     input:
         fq = "fastp/trimmed/se/{biosample}/{replicate}/{run}_{end}.fastq.gz"
     output:
-        bam = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.bam",
-        unmapped = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
+        bam = temp("bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.bam"),
+        unmapped = temp("bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq")
     shell:
         """
             unset PERL5LIB; bowtie2\
@@ -61,7 +61,7 @@ rule cutsite_trimming:
     input:
         rules.bowtie2_se_global.output.unmapped
     output:
-        cutsite_trimmed = "cutsite_trimming/{sample}"
+        cutsite_trimmed = temp("cutsite_trimming/{biosample}/{replicate}/{run}_{end}.fastq")
     shell:
         """ 
             {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output}
@@ -79,12 +79,12 @@ rule bowtie2_se_local:
         index = get_index("gadi", config),
         cli_params = config['params']['bowtie2']['cli_params_local']
     log:
-        log = "logs/bowtie2_local//{sample}_{end}.log"
+        log = "logs/bowtie2_local/{biosample}/{replicate}/{run}_{end}.log"
     input:
-        fq = "fastp/trimmed/pe/{sample}_{end}.fastq.gz"
+        fq = rules.cutsite_trimming.output
     output:
-        bam = "bowtie2_rerun/align/se/{sample}_{end}.bam",
-        metrics = "bowtie2_rerun/report/se/{sample}_{end}.txt"
+        bam = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.bam"),
+        unmapped = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq")
     shell:
         """
             unset PERL5LIB; bowtie2\
@@ -92,7 +92,9 @@ rule bowtie2_se_local:
                     -p {threads}\
                     -U {input.fq}\
                     {params.cli_params}\
-                    --met-file {log.metrics}\
+                    --un {output.unmapped}\
+                    -rg-id BMG\
+                    --rg SM:{wildcards.sample}\
                     2 >> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
