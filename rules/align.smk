@@ -37,7 +37,7 @@ rule bowtie2_se_global:
         unmapped = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
     shell:
         """
-            unset PERL5LIB; bowtie2\
+            bowtie2\
                     -x {params.index}\
                     -p {threads}\
                     -U {input.fq}\
@@ -61,7 +61,7 @@ rule cutsite_trimming:
     input:
         rules.bowtie2_se_global.output.unmapped
     output:
-        cutsite_trimmed = "cutsite_trimming/{biosample}/{replicate}/{run}_{end}.fastq"
+        cutsite_trimmed = temp("cutsite_trimming/{biosample}/{replicate}/{run}_{end}.fastq")
     shell:
         """ 
             {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output}
@@ -87,7 +87,7 @@ rule bowtie2_se_local:
         unmapped = "bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
     shell:
         """
-            unset PERL5LIB; bowtie2\
+            bowtie2\
                     -x {params.index}\
                     -p {threads}\
                     -U {input.fq}\
@@ -97,4 +97,24 @@ rule bowtie2_se_local:
                     --rg SM:{wildcards.biosample}:{wildcards.run}\
                     2>> {log.log}\
             | samtools view -Shb - > {output.bam}
+        """
+
+rule samtools_merge:
+    """ merges BAM files from global and local alignmnent steps """
+    version:
+        1
+    conda:
+        "../envs/hicpro.yaml"
+    threads:
+        8
+    params:
+    log:
+    input:
+        bam1 = rules.bowtie2_se_global.output.bam,
+        bam2 = rules.bowtie2_se_local.output.bam
+    output:
+        bam
+    shell:
+        """
+            samtools merge 
         """
