@@ -21,10 +21,10 @@ rule run_fastp_se:
     threads:
         4
     input:
-        fastq = "raw/{run}_{end}.fastq.gz"
+        fastq = "raw/{run}{end}.fastq.gz"
     output:
-        trimmed = "fastp/trimmed/se/{biosample}/{replicate}/{run}_{end}.fastq.gz",
-        report_html = "fastp/report/se/{biosample}/{replicate}/{run}_{end}.fastp.html",
-        report_json = "fastp/report/se/{biosample}/{replicate}/{run}_{end}.fastp.json"
+        trimmed = "fastp/trimmed/se/{biosample}/{replicate}/{run}{end}.fastq.gz",
+        report_html = "fastp/report/se/{biosample}/{replicate}/{run}{end}.fastp.html",
+        report_json = "fastp/report/se/{biosample}/{replicate}/{run}{end}.fastp.json"
     shell:
         "fastp -i {input[0]} -o {output.trimmed} --html {output.report_html} --json {output.report_json} --thread {threads}"
