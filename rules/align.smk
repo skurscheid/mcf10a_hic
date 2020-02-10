@@ -83,8 +83,7 @@ rule bowtie2_se_local:
     input:
         fq = rules.cutsite_trimming.output
     output:
-        bam = temp("bowtie2/align_local/se/{biosample}/{rep}/{run}{end}.bam"),
-        unmapped = temp("bowtie2/align_local/se/{biosample}/{rep}/{run}{end}.unmap.fastq")
+        bam = temp("bowtie2/align_local/se/{biosample}/{rep}/{run}{end}.bam")
     shell:
         """
             bowtie2\
@@ -92,7 +91,6 @@ rule bowtie2_se_local:
                     -p {threads}\
                     -U {input.fq}\
                     {params.cli_params_local}\
-                    --un {output.unmapped}\
                     --rg-id BML\
                     --rg SM:{wildcards.biosample}:{wildcards.run}\
                     2>> {log.log}\
