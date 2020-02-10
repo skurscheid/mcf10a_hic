@@ -29,12 +29,12 @@ rule bowtie2_se_global:
         index = get_index("gadi", config),
         cli_params_global = config['params']['bowtie2']['cli_params_global']
     log:
-        log = "logs/bowtie2_global/{biosample}/{replicate}/{run}_{end}.log"
+        log = "logs/bowtie2_global/{biosample}/{rep}/{run}{end}.log"
     input:
-        fq = "fastp/trimmed/se/{biosample}/{replicate}/{run}_{end}.fastq.gz"
+        fq = "fastp/trimmed/se/{biosample}/{rep}/{run}{end}.fastq.gz"
     output:
-        bam = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.bam",
-        unmapped = "bowtie2/align_global/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
+        bam = "bowtie2/align_global/se/{biosample}/{rep}/{run}{end}.bam",
+        unmapped = "bowtie2/align_global/se/{biosample}/{rep}/{run}{end}.unmap.fastq"
     shell:
         """
             bowtie2\
@@ -57,11 +57,11 @@ rule cutsite_trimming:
         hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
         cutsite = "AAGCTT" #HindIII
     log:
-        log = "logs/cutsite_trimming/{biosample}/{replicate}/{run}_{end}.log"
+        log = "logs/cutsite_trimming/{biosample}/{rep}/{run}{end}.log"
     input:
         rules.bowtie2_se_global.output.unmapped
     output:
-        cutsite_trimmed = temp("cutsite_trimming/{biosample}/{replicate}/{run}_{end}.fastq")
+        cutsite_trimmed = temp("cutsite_trimming/{biosample}/{rep}/{run}{end}.fastq")
     shell:
         """ 
             {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output}
@@ -79,12 +79,12 @@ rule bowtie2_se_local:
         index = get_index("gadi", config),
         cli_params_local = config['params']['bowtie2']['cli_params_local']
     log:
-        log = "logs/bowtie2_local/{biosample}/{replicate}/{run}_{end}.log"
+        log = "logs/bowtie2_local/{biosample}/{rep}/{run}{end}.log"
     input:
         fq = rules.cutsite_trimming.output
     output:
-        bam = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.bam"),
-        unmapped = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq")
+        bam = temp("bowtie2/align_local/se/{biosample}/{rep}/{run}{end}.bam"),
+        unmapped = temp("bowtie2/align_local/se/{biosample}/{rep}/{run}{end}.unmap.fastq")
     shell:
         """
             bowtie2\
@@ -109,12 +109,12 @@ rule samtools_merge_local_global:
         8
     params:
     log:
-        log = "logs/samtools_merge/{biosample}/{replicate}/{run}_{end}.log"
+        log = "logs/samtools_merge/{biosample}/{rep}/{run}{end}.log"
     input:
         bam1 = rules.bowtie2_se_global.output.bam,
         bam2 = rules.bowtie2_se_local.output.bam
     output:
-        mergedBam = "samtools/merge/se/{biosample}/{rep}/{run}_{end}.bam"
+        mergedBam = "samtools/merge/se/{biosample}/{rep}/{run}{end}.bam"
     shell:
         """
             samtools merge -@ {threads} -n -f {output.mergedBam} {input.bam1} {input.bam2}
@@ -132,11 +132,11 @@ rule combine_bam_files:
         hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
         qual = config['params']['general']['alignment_quality']
     log:
-        log = "logs/mergeSAM/{biosample}/{replicate}/{run}.log",
+        log = "logs/mergeSAM/{biosample}/{rep}/{run}.log",
         stat = "mergeSam/combine/pe/{biosample}/{rep}/{run}_stats.txt"
     input:
-        bam1 = lambda wildcards: "/".join(["samtools", "merge", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end1_suffix"] + ".bam",
-        bam2 = lambda wildcards: "/".join(["samtools", "merge", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end2_suffix"] + ".bam"
+        bam1 = lambda wildcards: "/".join(["samtools", "merge", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
+        bam2 = lambda wildcards: "/".join(["samtools", "merge", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
     output:
         combinedBam = "mergeSam/combine/pe/{biosample}/{rep}/{run}.bam"
     shell:

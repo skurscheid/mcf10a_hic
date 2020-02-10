@@ -3,8 +3,8 @@ units: units.tsv
 
 params:
   general:
-    end1_suffix: "_1",
-    end2_suffix: "_2",
+    end1_suffix: "_1"
+    end2_suffix: "_2"
     alignment_quality: "10"
   hicpro:
     install_dir:
