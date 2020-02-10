@@ -83,8 +83,8 @@ rule bowtie2_se_local:
     input:
         fq = rules.cutsite_trimming.output
     output:
-        bam = "bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.bam",
-        unmapped = "bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq"
+        bam = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.bam"),
+        unmapped = temp("bowtie2/align_local/se/{biosample}/{replicate}/{run}_{end}.unmap.fastq")
     shell:
         """
             bowtie2\
@@ -99,7 +99,7 @@ rule bowtie2_se_local:
             | samtools view -Shb - > {output.bam}
         """
 
-rule samtools_merge:
+rule samtools_merge_local_global:
     """ merges BAM files from global and local alignmnent steps """
     version:
         1
@@ -109,12 +109,38 @@ rule samtools_merge:
         8
     params:
     log:
+        log = "logs/samtools_merge/{biosample}/{replicate}/{run}_{end}.log"
     input:
         bam1 = rules.bowtie2_se_global.output.bam,
         bam2 = rules.bowtie2_se_local.output.bam
     output:
-        bam
+        mergedBam = "samtools/merge/se/{biosample}/{rep}/{run}_{end}.bam"
     shell:
         """
-            samtools merge 
+            samtools merge -@ {threads} -n -f {output.mergedBam} {input.bam1} {input.bam2}
         """
+
+rule combine_bam_files:
+    """ combines SE BAM files to a single PE BAM file with additional filtering """
+    version:
+        1
+    conda:
+        "../envs/hicpro.yaml"
+    threads:
+        2
+    params:
+        hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
+        qual = config['params']['general']['alignment_quality']
+    log:
+        log = "logs/mergeSAM/{biosample}/{replicate}/{run}.log",
+        stat = "mergeSam/combine/pe/{biosample}/{rep}/{run}_stats.txt"
+    input:
+        bam1 = lambda wildcards: "/".join(["samtools", "merge", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end1_suffix"] + ".bam",
+        bam2 = lambda wildcards: "/".join(["samtools", "merge", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end2_suffix"] + ".bam"
+    output:
+        combinedBam = "mergeSam/combine/pe/{biosample}/{rep}/{run}.bam"
+    shell:
+        """ 
+            python {params.hicpro_dir}/scripts/mergeSAM.py -f {input.bam1} -r {input.bam2} -o {output.combinedBam} -q {params.qual} -t {log.stat} 2>>{log.log}
+        """
+

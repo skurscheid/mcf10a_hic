@@ -29,30 +29,34 @@ rule all_trim:
     input:
         expand("fastp/trimmed/se/{file}_{end}.fastq.gz",
                 file = make_targets_from_runTable(runTable),
-                end = ["1", "2"]),
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]]),
         expand("fastp/report/se/{file}_{end}.fastp.{suffix}",
                 file = make_targets_from_runTable(runTable),
-                end = ["1", "2"],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]],
                 suffix = ["json", "html"])
 
 rule all_align_global:
     input:
         expand("bowtie2/align_global/se/{file}_{end}.bam",
                 file = make_targets_from_runTable(runTable),
-                end = ["1", "2"]),
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]]),
         expand("bowtie2/align_global/se/{file}_{end}.unmap.fastq",
                 file = make_targets_from_runTable(runTable),
-                end = ["1", "2"])
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
 rule all_align_local:
     input:
         expand("bowtie2/align_local/se/{file}_{end}.bam",
                 file = make_targets_from_runTable(runTable)[3],
-                end = ["1", "2"]),
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]]),
         expand("bowtie2/align_local/se/{file}_{end}.unmap.fastq",
                 file = make_targets_from_runTable(runTable)[3],
-                end = ["1", "2"])
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
+rule all_merge_local_global:
+    input:
+        expand("samtools/merge/pe/{file}.bam",
+                file = make_targets_from_runTable(runTable)[3])
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
