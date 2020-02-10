@@ -120,6 +120,26 @@ rule samtools_merge_local_global:
             samtools merge -@ {threads} -n -f {output.mergedBam} {input.bam1} {input.bam2}
         """
 
+rule samtools_sort_merged_bam:
+    """ sorts the BAM files from merge step """
+    version:
+        1
+     conda:
+        "../envs/hicpro.yaml"
+    threads:
+        8
+    params:
+        tempPrefix = "temp/{run}_{end}"
+    log:
+        log = "logs/samtools_sort/{biosample}/{replicate}/{run}_{end}.log"
+    input:
+        rules.output.samtools_merge_local_global.mergedBam
+    output:
+        sortedBam = "samtools/sort/se/{biosample}/{rep}/{run}_{end}.bam"
+    """
+        samtools sort -@ {threads} -n -T {params.tempPrefix} -o {output.sortedBam} {input}
+    """
+
 rule combine_bam_files:
     """ combines SE BAM files to a single PE BAM file with additional filtering """
     version:
@@ -135,8 +155,8 @@ rule combine_bam_files:
         log = "logs/mergeSAM/{biosample}/{replicate}/{run}.log",
         stat = "mergeSam/combine/pe/{biosample}/{rep}/{run}_stats.txt"
     input:
-        bam1 = lambda wildcards: "/".join(["samtools", "merge", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end1_suffix"] + ".bam",
-        bam2 = lambda wildcards: "/".join(["samtools", "merge", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end2_suffix"] + ".bam"
+        bam1 = lambda wildcards: "/".join(["samtools", "sort", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end1_suffix"] + ".bam",
+        bam2 = lambda wildcards: "/".join(["samtools", "sort", "se", wilcards["biosample"], wildcards["rep"], wildcards["run"]]) + "_" + config["params"]["general"]["end2_suffix"] + ".bam"
     output:
         combinedBam = "mergeSam/combine/pe/{biosample}/{rep}/{run}.bam"
     shell:
