@@ -55,8 +55,15 @@ rule all_align_local:
 
 rule all_merge_local_global:
     input:
-        expand("samtools/merge/pe/{file}.bam",
-                file = make_targets_from_runTable(runTable)[3])
+        expand("samtools/merge/pe/{file}_{end}.bam",
+                file = make_targets_from_runTable(runTable)[3],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
+
+rule all_combine_bam_files:
+    input:
+        expand("mergeSam/combine/pe/{file}.bam",
+               file = make_targets_from_runTable(runTable)[3])
+
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
