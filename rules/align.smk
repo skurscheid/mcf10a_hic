@@ -83,7 +83,7 @@ rule bowtie2_se_local:
     input:
         fq = rules.cutsite_trimming.output
     output:
-        bam = temp("bowtie2/align_local/se/{biosample}/{rep}/{run}{end}.bam")
+        bam = "bowtie2/align_local/se/{biosample}/{rep}/{run}{end}.bam"
     shell:
         """
             bowtie2\
@@ -92,7 +92,7 @@ rule bowtie2_se_local:
                     -U {input.fq}\
                     {params.cli_params_local}\
                     --rg-id BML\
-                    --rg SM:{wildcards.biosample}:{wildcards.run}\
+                    --rg SM:{wildcards.biosample}:{wildcards.run}:local_step\
                     2>> {log.log}\
             | samtools view -Shb - > {output.bam}
         """
