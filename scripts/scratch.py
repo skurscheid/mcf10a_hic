@@ -9,7 +9,7 @@ wildcards = {"batch" : "170306_NB501086_0102_HiC1_6_run4",
              "command" : "hicBuildMatrix_bin",
              "sub_command" : "10000"}
 
-runTable = pd.read_csv("SraRunTable.tsv", sep = ",")
+runTable = pd.read_csv("SraRunTable.csv", sep = ",")
 runTable
 
 function 
