@@ -31,12 +31,8 @@ rule all:
 rule all_trim:
     input:
         expand("fastp/trimmed/se/{file}{end}.fastq.gz",
-                file = make_targets_from_runTable(runTable),
-                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]]),
-        expand("fastp/report/se/{file}{end}.fastp.{suffix}",
-                file = make_targets_from_runTable(runTable),
-                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]],
-                suffix = ["json", "html"])
+                file = make_targets_from_runTable(runTable)[53],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
 rule all_align_global:
     input:

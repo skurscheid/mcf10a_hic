@@ -42,5 +42,10 @@ rule fastp_dummy:
         ln_target = "fastp/trimmed/se/{biosample}/{replicate}/{run}{end}.fastq.gz"
     shell:
         """
-            if [ ! -f {output.ln_target} ]; then ln -s {input.fastq} {output.ln_target}; fi
+            if [ -e {output.ln_target} ] && [ ! -L {output.ln_target} ];\
+                then rm {output.ln_target}; ln -sr {input.fastq} {output.ln_target};\
+            else\
+                ln -sr {input.fastq} {output.ln_target};\
+            fi
         """
+
