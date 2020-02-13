@@ -160,6 +160,6 @@ rule combine_bam_files:
         combinedBam = "mergeSam/combine/pe/{biosample}/{rep}/{run}.bam"
     shell:
         """ 
-            python {params.hicpro_dir}/scripts/mergeSAM.py -f {input.bam1} -r {input.bam2} -o {output.combinedBam} -q {params.qual} -t {log.stat} 2>>{log.log}
+            python {params.hicpro_dir}/scripts/mergeSAM.py -q {params.qual} -f {input.bam1} -r {input.bam2} -o {output.combinedBam} -q {params.qual} -t {log.stat} 2>>{log.log}
         """
 
