@@ -16,7 +16,7 @@ target=${cli_target}
 source ~/.bashrc
 
 /home/150/sxk150/miniconda3/envs/snakemake/bin/snakemake -s /home/150/sxk150/cellular_identity_nucleome/Snakefile\
-    -R `/home/150/sxk150/cellular_identity_nucleome/scripts/cli_snakemake.sh ${cli_target} --lc`\
+    -R `/home/150/sxk150/cellular_identity_nucleome/scripts/cli_snakemake.sh ${target} --lc`\
     --configfile /home/150/sxk150/cellular_identity_nucleome/config.yaml\
 	--use-conda\
 	--cluster "qsub -P {cluster.P}\
@@ -37,5 +37,5 @@ source ~/.bashrc
     --local-cores 1\
 	--cluster-config /home/150/sxk150/cellular_identity_nucleome/cluster.json\
     --keep-going\
-	-prn
+	-pr
 

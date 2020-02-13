@@ -8,3 +8,4 @@
         --keep-going\
 	-pr\
 	-R `/home/150/sxk150/cellular_identity_nucleome/scripts/cli_snakemake.sh ${1} --lc`\
+	${2}

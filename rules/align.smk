@@ -27,7 +27,8 @@ rule bowtie2_se_global:
         8
     params:
         index = get_index("gadi", config),
-        cli_params_global = config['params']['bowtie2']['cli_params_global']
+        cli_params_global = config['params']['bowtie2']['cli_params_global'],
+        samtools_params_global = "-F 4 -bS"
     log:
         log = "logs/bowtie2_global/{biosample}/{rep}/{run}{end}.log"
     input:
@@ -44,9 +45,9 @@ rule bowtie2_se_global:
                     {params.cli_params_global}\
                     --un {output.unmapped}\
                     --rg-id BMG\
-                    --rg SM:{wildcards.biosample}:{wildcards.run}\
+                    --rg SM:{wildcards.run}{wildcards.end}\
                     2>> {log.log}\
-            | samtools view -Shb - > {output.bam}
+            | samtools view {params.samtools_params_global} - > {output.bam}
         """
 
 rule cutsite_trimming:
@@ -77,7 +78,8 @@ rule bowtie2_se_local:
         8
     params:
         index = get_index("gadi", config),
-        cli_params_local = config['params']['bowtie2']['cli_params_local']
+        cli_params_local = config['params']['bowtie2']['cli_params_local'],
+        samtools_params_local = "-bS"
     log:
         log = "logs/bowtie2_local/{biosample}/{rep}/{run}{end}.log"
     input:
@@ -92,9 +94,9 @@ rule bowtie2_se_local:
                     -U {input.fq}\
                     {params.cli_params_local}\
                     --rg-id BML\
-                    --rg SM:{wildcards.biosample}:{wildcards.run}:local_step\
+                    --rg SM:{wildcards.run}{wildcards.end}:local_step\
                     2>> {log.log}\
-            | samtools view -Shb - > {output.bam}
+            | samtools view {params.samtools_params_local} - > {output.bam}
         """
 
 rule samtools_merge_local_global:

@@ -18,8 +18,11 @@ runTable = pd.read_csv("SraRunTable.csv", sep = ",")
 
 include: "scripts/helper.py"
 
-##### build targets #####
+##### global variables/constraints #####
+wildcard_constraints:
+    run="[^_]*"
 
+##### build targets #####
 rule all:
     input:
         # The first rule should define the default target files
@@ -62,7 +65,7 @@ rule all_merge_local_global:
 rule all_combine_bam_files:
     input:
         expand("mergeSam/combine/pe/{file}.bam",
-               file = make_targets_from_runTable(runTable)[3])
+               file = make_targets_from_runTable(runTable)[53])
 
 
 ##### load additional workflow rules #####
