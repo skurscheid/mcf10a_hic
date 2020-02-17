@@ -1,0 +1,55 @@
+Run,BioSample,Cell_type,Experiment,Sample Name,source_name,SRA Study,time_point,replicate
+SRR7872270,SAMN10085537,ASCs on day 3 after adipogenic induction,SRX4711156,GSM3394773,Human primary adipose stem cells,SRP131871,Day 3,rep1
+SRR6657510,SAMN08446098,ASCs on the day of differentiation induction,SRX3634727,GSM2973922,Human primary adipose stem cells,SRP131871,Day 0,rep1
+SRR6657511,SAMN08446098,ASCs on the day of differentiation induction,SRX3634727,GSM2973922,Human primary adipose stem cells,SRP131871,Day 0,rep1
+SRR6657512,SAMN08446098,ASCs on the day of differentiation induction,SRX3634727,GSM2973922,Human primary adipose stem cells,SRP131871,Day 0,rep1
+SRR6657513,SAMN08446098,ASCs on the day of differentiation induction,SRX3634727,GSM2973922,Human primary adipose stem cells,SRP131871,Day 0,rep1
+SRR6657514,SAMN08446098,ASCs on the day of differentiation induction,SRX3634727,GSM2973922,Human primary adipose stem cells,SRP131871,Day 0,rep1
+SRR6657515,SAMN08446097,ASCs on the day of differentiation induction,SRX3634728,GSM2973923,Human primary adipose stem cells,SRP131871,Day 0,rep2
+SRR6657516,SAMN08446097,ASCs on the day of differentiation induction,SRX3634728,GSM2973923,Human primary adipose stem cells,SRP131871,Day 0,rep2
+SRR6657517,SAMN08446097,ASCs on the day of differentiation induction,SRX3634728,GSM2973923,Human primary adipose stem cells,SRP131871,Day 0,rep2
+SRR6657518,SAMN08446097,ASCs on the day of differentiation induction,SRX3634728,GSM2973923,Human primary adipose stem cells,SRP131871,Day 0,rep2
+SRR6657519,SAMN08446097,ASCs on the day of differentiation induction,SRX3634728,GSM2973923,Human primary adipose stem cells,SRP131871,Day 0,rep2
+SRR6657520,SAMN08446096,ASCs on day 1 after adipogenic induction,SRX3634729,GSM2973924,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657521,SAMN08446096,ASCs on day 1 after adipogenic induction,SRX3634729,GSM2973924,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657522,SAMN08446096,ASCs on day 1 after adipogenic induction,SRX3634729,GSM2973924,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657523,SAMN08446096,ASCs on day 1 after adipogenic induction,SRX3634729,GSM2973924,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657524,SAMN08446096,ASCs on day 1 after adipogenic induction,SRX3634729,GSM2973924,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657525,SAMN08446095,ASCs on day 1 after adipogenic induction,SRX3634730,GSM2973925,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657526,SAMN08446095,ASCs on day 1 after adipogenic induction,SRX3634730,GSM2973925,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657527,SAMN08446095,ASCs on day 1 after adipogenic induction,SRX3634730,GSM2973925,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657528,SAMN08446095,ASCs on day 1 after adipogenic induction,SRX3634730,GSM2973925,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657529,SAMN08446095,ASCs on day 1 after adipogenic induction,SRX3634730,GSM2973925,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657536,SAMN08446093,ASCs on day 3 after adipogenic induction,SRX3634732,GSM2973927,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657537,SAMN08446093,ASCs on day 3 after adipogenic induction,SRX3634732,GSM2973927,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657538,SAMN08446093,ASCs on day 3 after adipogenic induction,SRX3634732,GSM2973927,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657539,SAMN08446093,ASCs on day 3 after adipogenic induction,SRX3634732,GSM2973927,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657540,SAMN08446093,ASCs on day 3 after adipogenic induction,SRX3634732,GSM2973927,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657541,SAMN08446092,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634733,GSM2973928,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep1
+SRR6657542,SAMN08446092,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634733,GSM2973928,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep1
+SRR6657543,SAMN08446092,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634733,GSM2973928,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep1
+SRR6657544,SAMN08446092,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634733,GSM2973928,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep1
+SRR6657545,SAMN08446092,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634733,GSM2973928,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep1
+SRR6657546,SAMN08446091,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634734,GSM2973929,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep2
+SRR6657547,SAMN08446091,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634734,GSM2973929,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep2
+SRR6657548,SAMN08446091,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634734,GSM2973929,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep2
+SRR6657549,SAMN08446091,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634734,GSM2973929,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep2
+SRR6657550,SAMN08446091,Proliferating adipose stem cells (ASCs) in growth medium,SRX3634734,GSM2973929,Human primary adipose stem cells,SRP131871,"Day -2 (proliferative; ""Pro"")",rep2
+SRR6657551,SAMN08446090,ASCs on day 1 after neuronal induction,SRX3634735,GSM2973930,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657552,SAMN08446090,ASCs on day 1 after neuronal induction,SRX3634735,GSM2973930,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657553,SAMN08446090,ASCs on day 1 after neuronal induction,SRX3634735,GSM2973930,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657554,SAMN08446090,ASCs on day 1 after neuronal induction,SRX3634735,GSM2973930,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657555,SAMN08446090,ASCs on day 1 after neuronal induction,SRX3634735,GSM2973930,Human primary adipose stem cells,SRP131871,Day 1,rep1
+SRR6657556,SAMN08446089,ASCs on day 1 after neuronal induction,SRX3634736,GSM2973931,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657557,SAMN08446089,ASCs on day 1 after neuronal induction,SRX3634736,GSM2973931,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657558,SAMN08446089,ASCs on day 1 after neuronal induction,SRX3634736,GSM2973931,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657559,SAMN08446089,ASCs on day 1 after neuronal induction,SRX3634736,GSM2973931,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657560,SAMN08446089,ASCs on day 1 after neuronal induction,SRX3634736,GSM2973931,Human primary adipose stem cells,SRP131871,Day 1,rep2
+SRR6657561,SAMN08446088,ASCs on day 3 after adipogenic induction,SRX3634737,GSM2973932,Human primary adipose stem cells,SRP131871,Day 3,rep1
+SRR6657562,SAMN08446088,ASCs on day 3 after adipogenic induction,SRX3634737,GSM2973932,Human primary adipose stem cells,SRP131871,Day 3,rep1
+SRR6657563,SAMN08446088,ASCs on day 3 after adipogenic induction,SRX3634737,GSM2973932,Human primary adipose stem cells,SRP131871,Day 3,rep1
+SRR6657564,SAMN08446088,ASCs on day 3 after adipogenic induction,SRX3634737,GSM2973932,Human primary adipose stem cells,SRP131871,Day 3,rep1
+SRR6657565,SAMN08446087,ASCs on day 3 after adipogenic induction,SRX3634738,GSM2973933,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657567,SAMN08446087,ASCs on day 3 after adipogenic induction,SRX3634738,GSM2973933,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657568,SAMN08446087,ASCs on day 3 after adipogenic induction,SRX3634738,GSM2973933,Human primary adipose stem cells,SRP131871,Day 3,rep2
+SRR6657566,SAMN08446087,ASCs on day 3 after adipogenic induction,SRX3634738,GSM2973933,Human primary adipose stem cells,SRP131871,Day 3,rep2

@@ -1,0 +1,1 @@
+~/software/bin/HiC-Pro_2.11.1/bin/HiC-Pro -i /scratch/kv78/cellular_identity_nucleome/hicpro_test/raw/ -o /scratch/kv78/cellular_identity_nucleome/hicpro_test/output/ -c ~/software/bin/HiC-Pro_2.11.1/config-hicpro.txt -p -s mapping

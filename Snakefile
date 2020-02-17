@@ -12,14 +12,17 @@ min_version("5.1.2")
 
 #configfile: "config.yaml"
 
-runTable = pd.read_csv("SraRunTable.txt", sep = ",")
+runTable = pd.read_csv("SraRunTable.csv", sep = ",")
 
 ##### load additional functions #####
 
 include: "scripts/helper.py"
 
-##### build targets #####
+##### global variables/constraints #####
+wildcard_constraints:
+    run="[^_]*"
 
+##### build targets #####
 rule all:
     input:
         # The first rule should define the default target files
@@ -27,24 +30,41 @@ rule all:
 
 rule all_trim:
     input:
-        expand("fastp/trimmed/se/{file}_{end}.fastq.gz",
-                file = list(runTable["Run"])[0],
-                end = ["1", "2"]),
-        expand("fastp/report/se/{file}_{end}.fastp.{suffix}",
-                file = list(runTable["Run"])[0],
-                end = ["1", "2"],
-                suffix = ["json", "html"])
+        expand("fastp/trimmed/se/{file}{end}.fastq.gz",
+                file = make_targets_from_runTable(runTable)[53],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
-rule all_align:
+rule all_align_global:
     input:
-        expand("bowtie2/align/se/{file}_{end}.bam",
-                file = list(runTable["Run"])[0],
-                end = ["1", "2"]),
-        expand("bowtie2/report/se/{file}_{end}.txt",
-                file = list(runTable["Run"])[0],
-                end = ["1", "2"]),
+        expand("bowtie2/align_global/se/{file}{end}.bam",
+                file = make_targets_from_runTable(runTable),
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]]),
+        expand("bowtie2/align_global/se/{file}{end}.unmap.fastq",
+                file = make_targets_from_runTable(runTable),
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
+
+rule all_align_local:
+    input:
+        expand("bowtie2/align_local/se/{file}{end}.bam",
+                file = make_targets_from_runTable(runTable)[3],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]]),
+        expand("bowtie2/align_local/se/{file}{end}.unmap.fastq",
+                file = make_targets_from_runTable(runTable)[3],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
+
+rule all_merge_local_global:
+    input:
+        expand("samtools/merge/pe/{file}{end}.bam",
+                file = make_targets_from_runTable(runTable)[3],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
+
+rule all_combine_bam_files:
+    input:
+        expand("mergeSam/combine/pe/{file}.bam",
+               file = make_targets_from_runTable(runTable)[53])
+
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
-include: "rules/bowtie2.smk"
+include: "rules/align.smk"
 include: "rules/hicexplorer.smk"

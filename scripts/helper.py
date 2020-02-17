@@ -3,6 +3,15 @@ import os
 import yaml
 import pandas as pd
 
+def make_targets_from_runTable(runTable):
+    t = []
+    for index, row in runTable.iterrows():
+        e = list(row[['BioSample', 'replicate', 'Run']])
+        p = "/".join(e)
+        t.append(p)
+    return(t)
+
+
 def create_testing_input(base_path, units):
     """creates test files for snakemake run"""
     for index, row in units.iterrows():
