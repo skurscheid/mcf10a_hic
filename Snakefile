@@ -63,6 +63,11 @@ rule all_combine_bam_files:
         expand("mergeSam/combine/pe/{file}.bam",
                file = make_targets_from_runTable(runTable)[53])
 
+rule all_hicBuildMatrix_bin_test_run:
+    input:
+        expand("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{file}_hic_matrix.{ext}",
+               file = make_targets_from_runTable(runTable)[53],
+               ext = ["h5", "bam"]),
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
