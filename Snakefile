@@ -20,7 +20,8 @@ include: "scripts/helper.py"
 
 ##### global variables/constraints #####
 wildcard_constraints:
-    run="[^_]*"
+    run="[^_]*",
+    resolution="\d+"
 
 ##### build targets #####
 rule all:
@@ -66,8 +67,16 @@ rule all_combine_bam_files:
 rule all_hicBuildMatrix_bin_test_run:
     input:
         expand("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{file}_hic_matrix.{ext}",
+               resolution = "20000",
                file = make_targets_from_runTable(runTable)[53],
                ext = ["h5", "bam"]),
+
+rule all_hicBuildMatrix_bin:
+    input:
+        expand("hicexplorer/hicBuildMatrix_bin/{resolution}/{file}_hic_matrix.{ext}",
+               resolution = "20000",
+               file = make_targets_from_runTable(runTable)[15],
+               ext = ["h5"]),
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
