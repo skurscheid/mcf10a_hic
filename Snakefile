@@ -69,8 +69,15 @@ rule all_hicBuildMatrix_bin_test_run:
         expand("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{file}_hic_matrix.{ext}",
                resolution = "20000",
                file = make_targets_from_runTable(runTable)[53],
-               ext = ["h5", "bam"]),
+               ext = ["h5", "bam"])
 
+rule all_hicBuildMatrix_rest_test_run:
+    input:
+        expand("hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{file}_hic_matrix.{ext}",
+               res_enzyme = "HindIII",
+               file = make_targets_from_runTable(runTable)[53],
+               ext = ["h5", "bam"])
+               
 rule all_hicBuildMatrix_bin:
     input:
         expand("hicexplorer/hicBuildMatrix_bin/{resolution}/{file}_hic_matrix.{ext}",
