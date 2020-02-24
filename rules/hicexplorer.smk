@@ -22,9 +22,9 @@ rule findRestSites:
     version:
         "1"
     params:
-        searchPattern = "AAGCTT"
+        searchPattern = lambda wildcards: config["params"]["hicexplorer"]["findRestSites"][wildcards.res_enzyme]
     input:
-        fasta = lambda wildcards: config["params"]["hicexplorer"]["genome_fasta"]["gdu"]
+        fasta = lambda wildcards: config["params"]["hicexplorer"]["genome_fasta"]["gadi"]
     output:
         rest_sites_bed = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
     shell:
@@ -54,7 +54,7 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
         8
     input:
         mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
-        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam",
         restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
     benchmark:
         "benchmarks/hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}/times.tsv"
@@ -121,14 +121,15 @@ rule hicBuildMatrix_restrictionCutFile:
         8
     input:
         mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
-        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam",
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
     benchmark:
-        "benchmarks/hicexplorer/hicBuildMatrix_rest/{rest_site}/{biosample}/{rep}/{run}/times.tsv"
+        "benchmarks/hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}/times.tsv"
     log:
-        "logs/hicexplorer/hicBuildMatrix_rest/{rest_site}/{biosample}/{rep}/{run}.txt"
+        "logs/hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}.txt"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_rest/{rest_site}/{biosample}/{rep}/{run}.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix_rest/{rest_site}/{biosample}/{rep}/{run}/qc")
+        outHicMatrix = "hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}/qc")
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \

@@ -14,18 +14,18 @@ params:
     genome_fasta:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/genome.fa"
-      raijin: "/short/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/genome.fa"
       gadi: "/scratch/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/genome.fa"
     hicBuildMatrix:
       restrictionSequence: "AAGCTT"
       danglingSequence: "AGCT"
       genomeAssembly: "GRCh38"
+    findRestSites:
+      HindIII : "AAGCTT"
   bowtie2:
     cli_params_global: "--very-sensitive -L 30 --score-min L,-0.6,-0.2 --end-to-end --reorder"
     cli_params_local: "--very-sensitive -L 20 --score-min L,-0.6,-0.2 --end-to-end --reorder"
     index:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
-      raijin: "/short/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
       gadi: "/scratch/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
   fastp: ""
