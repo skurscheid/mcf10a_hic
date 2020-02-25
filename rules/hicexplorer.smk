@@ -80,34 +80,33 @@ rule hicBuildMatrix_bin_test_run:
     conda:
         "../envs/hicexplorer.yaml"
     version:
-        1
+        5
     params:
-        inputBufferSize = 400000,
-        restrictionSequence = "AAGCTT"
+        inputBufferSize = 400000
     threads:
         8
     input:
         mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
-        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam",
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
     benchmark:
-        "benchmarks/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/times.tsv"
-    log:
-        "logs/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/log.txt"
+        "benchmarks/hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}/times.tsv"
+    log: 
+        "logs/hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}/log.txt"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/qc"),
-        outBam = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}_hic_matrix.bam"
+        outHicMatrix = "hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}/qc"),
+        outBam = "hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}_hic_matrix.bam"
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
-                --threads {threads}\
-                --restrictionSequence {params.restrictionSequence}\
-                --binSize {wildcards.resolution}\
+                --restrictionCutFile {input.restrictionCutFile} \
+                --threads {threads} \
                 --inputBufferSize {params.inputBufferSize} \
                 --outFileName {output.outHicMatrix} \
                 --outBam {output.outBam}\
                 --QCfolder {output.qcFolder} \
-                --doTestRun 1>{log} 2>{log}
+                1>{log} 2>{log}
         """
 
 rule hicBuildMatrix_restrictionCutFile:
