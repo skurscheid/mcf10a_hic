@@ -2,21 +2,30 @@ samples: samples.tsv
 units: units.tsv
 
 params:
+  general:
+    end1_suffix: "_1"
+    end2_suffix: "_2"
+    alignment_quality: "10"
+  hicpro:
+    install_dir:
+      gadi: "/home/150/sxk150/software/bin/HiC-Pro_2.11.1"
+
   hicexplorer:
     genome_fasta:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/genome.fa"
-      raijin: "/short/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/genome.fa"
       gadi: "/scratch/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/genome.fa"
     hicBuildMatrix:
       restrictionSequence: "AAGCTT"
       danglingSequence: "AGCT"
       genomeAssembly: "GRCh38"
+    findRestSites:
+      HindIII : "AAGCTT"
   bowtie2:
-    cli_params: "--reorder --local --rdg 6,4 --rfg 6,4"
+    cli_params_global: "--very-sensitive -L 30 --score-min L,-0.6,-0.2 --end-to-end --reorder"
+    cli_params_local: "--very-sensitive -L 20 --score-min L,-0.6,-0.2 --end-to-end --reorder"
     index:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
-      raijin: "/short/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
       gadi: "/scratch/kv78/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"
   fastp: ""

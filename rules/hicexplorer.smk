@@ -22,14 +22,14 @@ rule findRestSites:
     version:
         "1"
     params:
-        searchPattern = "AAGCTT"
+        searchPattern = lambda wildcards: config["params"]["hicexplorer"]["findRestSites"][wildcards.res_enzyme]
     input:
-        fasta = lambda wildcards: config["params"]["hicexplorer"]["genome_fasta"]["gdu"]
+        fasta = lambda wildcards: config["params"]["hicexplorer"]["genome_fasta"]["gadi"]
     output:
         rest_sites_bed = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
     shell:
         """
-        hicexplorer --fasta {input.fasta} --searchPattern {params.searchPattern} --outFile {output.rest_sites_bed}
+            findRestSite --fasta {input.fasta} --searchPattern {params.searchPattern} --outFile {output.rest_sites_bed}
         """
 
 rule mappableRestSites:
@@ -53,17 +53,17 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
     threads:
         8
     input:
-        mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
-        mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
-        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
+        mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam",
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
     benchmark:
-        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "benchmarks/hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}/times.tsv"
     log: 
-        "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/log.txt"
+        "logs/hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}/log.txt"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/qc"),
-        outBam = "hicexplorer/hicBuildMatrix/test_run/{res_enzyme}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.bam"
+        outHicMatrix = "hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}/qc"),
+        outBam = "hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}_hic_matrix.bam"
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -87,16 +87,16 @@ rule hicBuildMatrix_bin_test_run:
     threads:
         8
     input:
-        mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
-        mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam"
+        mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
     benchmark:
-        "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "benchmarks/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/times.tsv"
     log:
-        "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/log.txt"
+        "logs/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/log.txt"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}/qc"),
-        outBam = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{batch}/{sample}/test_{sample}_{lane}_{replicate}_hic_matrix.bam"
+        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/qc"),
+        outBam = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}_hic_matrix.bam"
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -120,16 +120,16 @@ rule hicBuildMatrix_restrictionCutFile:
     threads:
         8
     input:
-        mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
-        mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam",
-        restrictionCutFile = "hicexplorer/findRestSite/hg38_{rest_site}_rest_sites.k50.bed"
+        mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam",
+        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.k50.bed"
     benchmark:
-        "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "benchmarks/hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}/times.tsv"
     log:
-        "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/log.txt"
+        "logs/hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}.txt"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix/{rest_site}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+        outHicMatrix = "hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{biosample}/{rep}/{run}/qc")
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -150,108 +150,22 @@ rule hicBuildMatrix_bin:
     threads:
         8
     input:
-        mate1 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end1.bam",
-        mate2 = "bowtie2/align/se/{batch}/{sample}_{lane}_{replicate}.end2.bam"
+        mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
     log:
-        "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/log.txt"
+        "logs/hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}.txt"
     benchmark:
-        "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/benchmark/times.tsv"
+        "benchmarks/hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}.tsv"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/{resolution}/{batch}/{sample}/{sample}_{lane}_{replicate}/qc")
+        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}/qc")
     shell:
         """
-        hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
-                --threads {threads} \
-                --binSize {wildcards.resolution}\
-                --inputBufferSize {params.inputBufferSize} \
-                --outFileName {output.outHicMatrix} \
-                --QCfolder {output.qcFolder} 1>{log} 2>{log}
+            hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
+                    --threads {threads} \
+                    --binSize {wildcards.resolution}\
+                    --inputBufferSize {params.inputBufferSize} \
+                    --outFileName {output.outHicMatrix} \
+                    --QCfolder {output.qcFolder} 1>{log} 2>{log}
         """
 
-rule hicQC_per_batch:
-    conda:
-        "../envs/hicexplorer.yaml"
-    version:
-        1
-    params:
-        labels = hicQCLabels
-    threads:
-        64
-    input:
-        hicQCInput
-    output:
-        directory("{tool}/{command}/{sub_command}/{batch}/")
-    shell:
-        """
-        hicQC --logfiles {input}\
-              --labels {params.labels}\
-              --outputFolder {output}
-        """
-
-rule hicCorrelate_per_batch:
-    conda:
-        "../envs/hicexplorer.yaml"
-    version:
-        1
-    params:
-        labels = h5PerBatchLabels,
-        additional = "--plotNumbers --plotFileFormat pdf"
-    threads:
-        32
-    input:
-        files = h5PerBatchFiles
-    output:
-        heatmap = "hicexplorer/hicCorrelate/perBatch/{command}/{subcommand}/{batch}_heatmap.pdf",
-        scatterplot = "hicexplorer/hicCorrelate/perBatch/{command}/{subcommand}/{batch}_scatterplot.pdf",
-    shell:
-        """
-        hicCorrelate --matrices {input.files}\
-                     --labels {params.labels}\
-                     --threads {threads}\
-                     --outFileNameHeatmap {output.heatmap}\
-                     --outFileNameScatter {output.scatterplot}
-                        
-        """
-
-rule hicCorrelate_per_sample:
-    conda:
-        "../envs/hicexplorer.yaml"
-    version:
-        1
-    params:
-        labels = h5PerSampleLabels,
-        additional = "--plotNumbers --plotFileFormat pdf"
-    threads:
-        32
-    input:
-        files = h5PerSampleFiles
-    output:
-        heatmap = "hicexplorer/hicCorrelate/perSample/{command}/{subcommand}/{sample}_heatmap.pdf",
-        scatterplot = "hicexplorer/hicCorrelate/perSample/{command}/{subcommand}/{sample}_scatterplot.pdf"
-    shell:
-        """
-        hicCorrelate --matrices {input.files}\
-                     --labels {params.labels}\
-                     --threads {threads}\
-                     --outFileNameHeatmap {output.heatmap}\
-                     --outFileNameScatter {output.scatterplot}
-                        
-        """
-
-rule hicSumMatrices:
-    conda:
-        "../envs/hicexplorer.yaml"
-    version:
-        1
-    params:
-    threads:
-        1
-    input:
-        files = h5PerSampleFiles
-    output:
-        matrix = "hicexplorer/hicSumMatrices/{command}/{subcommand}/{sample}.h5"
-    shell:
-        """
-            hicSumMatrices --matrices {input.files} --outFileName {output.matrix}
-        """

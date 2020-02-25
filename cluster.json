@@ -1,0 +1,36 @@
+{
+    "__default__" :
+    {
+        "P" : "pb97",
+        "queue" : "biodev",
+        "mem" : "32G",
+        "std1_out_dir" : "/home/150/sxk150/qsub_out",
+        "error_out_dir" : "/home/150/sxk150/qsub_error",
+        "M" : "skurscheid@gmail.com",
+        "m" : "abe",
+        "walltime": "23:59:00",
+        "storage" : "scratch/kv78",
+        "mem" : "64G",
+	"jobfs" : "256G"
+    },
+    "hicCorrelate_per_batch":
+    {
+        "mem" : "64G",
+        "walltime" : "01:00:00"
+    },
+    "hicCorrelate_per_sample":
+    {
+        "mem" : "64G",
+        "walltime" : "01:00:00"
+    },
+    "hicCorrelate_per_replicate":
+    {
+        "mem" : "64G",
+        "walltime" : "01:00:00"
+    },
+    "hicBuildMatrix_bin":
+    {
+        "mem" : "128G",
+        "walltime" : "24:00:00"
+    }
+}
