@@ -85,6 +85,26 @@ rule all_hicBuildMatrix_bin:
                file = make_targets_from_runTable(runTable)[15],
                ext = ["h5"]),
 
+rule all_hicBuildMatrix_rest:
+    input:
+        expand("hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{file}_hic_matrix.{ext}",
+               res_enzyme = "HindIII",
+               file = make_targets_from_runTable(runTable)[53],
+               ext = ["h5", "bam"])
+
+##### rules for extended trial runs #####
+trial_samples = ['SAMN08446098/rep1/SRR6657510', 'SAMN08446098/rep1/SRR6657511',
+                 'SAMN08446098/rep1/SRR6657512', 'SAMN08446098/rep1/SRR6657513',
+                 'SAMN08446098/rep1/SRR6657514', 'SAMN08446097/rep2/SRR6657515',
+                 'SAMN08446097/rep2/SRR6657516', 'SAMN08446097/rep2/SRR6657517',
+                 'SAMN08446097/rep2/SRR6657518', 'SAMN08446097/rep2/SRR6657519']
+
+rule trial_hicBuildMatrix_rest:
+    input:
+        expand("hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{file}_hic_matrix.{ext}",
+               res_enzyme = "HindIII",
+               file = trial_samples,
+               ext = ["h5", "bam"])
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
 include: "rules/align.smk"
