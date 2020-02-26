@@ -1,3 +1,6 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
 # The main entry point of your workflow.
 # After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
 
@@ -28,6 +31,12 @@ rule all:
     input:
         # The first rule should define the default target files
         # Subsequent target rules can be specified below. They should start with all_*.
+
+rule all_trim_pe:
+    input:
+        expand("fastp/trimmed/pe/{file}{end}.fastq.gz",
+                file = make_targets_from_runTable(runTable)[53],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
 rule all_trim:
     input:
@@ -105,6 +114,7 @@ rule trial_hicBuildMatrix_rest:
                res_enzyme = "HindIII",
                file = trial_samples,
                ext = ["h5", "bam"])
+
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
 include: "rules/align.smk"
