@@ -26,10 +26,10 @@ rule run_fastp_pe:
         end1 = "raw/{run}_1.fastq.gz",
         end2 = "raw/{run}_2.fastq.gz"
     output:
-        out1 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_1.fastq.gz",
-        out2 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_2.fastq.gz",
-        report_html = "fastp/report/pe/{biosample}/{replicate}/{run}.fastp.html",
-        report_json = "fastp/report/pe/{biosample}/{replicate}/{run}.fastp.json"
+        out1 = "fastp/trimmed/se/{biosample}/{replicate}/{run}_1.fastq.gz",
+        out2 = "fastp/trimmed/se/{biosample}/{replicate}/{run}_2.fastq.gz",
+        report_html = "fastp/report/se/{biosample}/{replicate}/{run}.fastp.html",
+        report_json = "fastp/report/se/{biosample}/{replicate}/{run}.fastp.json"
     shell:
         """
             fastp -i {input.end1} -I {input.end2}\
@@ -41,23 +41,23 @@ rule run_fastp_pe:
                   --thread {threads} 2>>{log.log}
         """
 
-rule fastp_dummy:
-    conda:
-        "../envs/fastqProcessing.yaml"
-    version:
-        "2"
-    threads:
-        1
-    input:
-        fastq = "raw/{run}{end}.fastq.gz"
-    output:
-        ln_target = "fastp/trimmed/se/{biosample}/{replicate}/{run}{end}.fastq.gz"
-    shell:
-        """
-            if [ -e {output.ln_target} ] && [ ! -L {output.ln_target} ];\
-                then rm {output.ln_target}; ln -sr {input.fastq} {output.ln_target};\
-            else\
-                ln -sr {input.fastq} {output.ln_target};\
-            fi
-        """
+#rule fastp_dummy:
+#    conda:
+#        "../envs/fastqProcessing.yaml"
+#    version:
+#        "2"
+#    threads:
+#        1
+#    input:
+#        fastq = "raw/{run}{end}.fastq.gz"
+#    output:
+#        ln_target = "fastp/trimmed/se/{biosample}/{replicate}/{run}{end}.fastq.gz"
+#    shell:
+#        """
+#            if [ -e {output.ln_target} ] && [ ! -L {output.ln_target} ];\
+#                then rm {output.ln_target}; ln -sr {input.fastq} {output.ln_target};\
+#            else\
+#                ln -sr {input.fastq} {output.ln_target};\
+#            fi
+#        """
 

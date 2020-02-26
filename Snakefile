@@ -35,7 +35,7 @@ rule all:
 rule all_trim_pe:
     input:
         expand("fastp/trimmed/pe/{file}{end}.fastq.gz",
-                file = make_targets_from_runTable(runTable)[53],
+                file = make_targets_from_runTable(runTable)[1],
                 end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
 rule all_trim:
@@ -71,7 +71,7 @@ rule all_merge_local_global:
 rule all_combine_bam_files:
     input:
         expand("mergeSam/combine/pe/{file}.bam",
-               file = make_targets_from_runTable(runTable)[53])
+               file = make_targets_from_runTable(runTable)[1])
 
 rule all_hicBuildMatrix_bin_test_run:
     input:
@@ -98,7 +98,7 @@ rule all_hicBuildMatrix_rest:
     input:
         expand("hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{file}_hic_matrix.{ext}",
                res_enzyme = "HindIII",
-               file = make_targets_from_runTable(runTable)[53],
+               file = make_targets_from_runTable(runTable)[1],
                ext = ["h5", "bam"])
 
 ##### rules for extended trial runs #####
