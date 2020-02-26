@@ -76,7 +76,7 @@ rule hicBuildMatrix_restrictionCutFile_test_run:
                 --doTestRun 1>{log} 2>{log}
         """
 
-rule hicBuildMatrix_bin_test_run:
+rule hicBuildMatrix_restrictionCutFile:
     conda:
         "../envs/hicexplorer.yaml"
     version:
@@ -109,7 +109,7 @@ rule hicBuildMatrix_bin_test_run:
                 1>{log} 2>{log}
         """
 
-rule hicBuildMatrix_restrictionCutFile:
+rule hicBuildMatrix_bin_test_run:
     conda:
         "../envs/hicexplorer.yaml"
     version:
@@ -140,7 +140,7 @@ rule hicBuildMatrix_restrictionCutFile:
                 --outFileName {output.outHicMatrix} \
                 --outBam {output.outBam}\
                 --QCfolder {output.qcFolder} \
-                1>{log} 2>{log}
+                --doTestRun 1>{log} 2>{log}
         """
 
 rule hicBuildMatrix_bin:
