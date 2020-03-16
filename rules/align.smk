@@ -2,9 +2,6 @@ __author__ = "Sebastian Kurscheid (sebastian.kurscheid@anu.edu.au)"
 __license__ = "MIT"
 __date__ = "2020-02-04"
 
-# vim: syntax=python tabstop=4 expandtab
-# coding: utf-8
-
 
 """
 Rules for aligning reads with bowtie2
