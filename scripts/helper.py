@@ -11,7 +11,6 @@ def make_targets_from_runTable(runTable):
         t.append(p)
     return(t)
 
-
 def create_testing_input(base_path, units):
     """creates test files for snakemake run"""
     for index, row in units.iterrows():
