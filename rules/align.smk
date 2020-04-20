@@ -22,6 +22,8 @@ rule bowtie2_se_global:
         "../envs/fastqProcessing.yaml"
     threads:
         8
+    group:
+        "align"
     params:
         index = get_index("gadi", config),
         cli_params_global = config['params']['bowtie2']['cli_params_global'],
@@ -51,6 +53,10 @@ rule cutsite_trimming:
     """trims potentially chimeric reads prior to second alignment"""
     version:
         1
+    group:
+        "align"
+    threads:
+        1
     params:
         hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
         cutsite = "AAGCTT" #HindIII
@@ -73,6 +79,8 @@ rule bowtie2_se_local:
         "../envs/fastqProcessing.yaml"
     threads:
         8
+    group:
+        "align"
     params:
         index = get_index("gadi", config),
         cli_params_local = config['params']['bowtie2']['cli_params_local'],
@@ -104,6 +112,8 @@ rule samtools_merge_local_global:
         "../envs/hicpro.yaml"
     threads:
         8
+    group:
+        "align"
     params:
     log:
         log = "logs/samtools_merge/{biosample}/{rep}/{run}{end}.log"
@@ -125,6 +135,8 @@ rule samtools_sort_merged_bam:
         "../envs/hicpro.yaml"
     threads:
         8
+    group:
+        "align"
     params:
         tempPrefix = "temp/{run}{end}"
     log:
@@ -146,6 +158,8 @@ rule combine_bam_files:
         "../envs/hicpro.yaml"
     threads:
         2
+    group:
+        "align"
     params:
         hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
         qual = config['params']['general']['alignment_quality']
