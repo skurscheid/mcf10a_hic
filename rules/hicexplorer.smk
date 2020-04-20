@@ -127,6 +127,6 @@ rule hicQC:
         '''
             hicQC --logfiles {input.qc_files}\
                   --labels {params.labels}\
-                  --outputFolder = {output}
+                  --outputFolder {output}
         '''
 
