@@ -1,3 +1,6 @@
+# vim: syntax=python tabstop=4 expandtab
+# coding: utf-8
+
 # The main entry point of your workflow.
 # After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
 
@@ -28,6 +31,12 @@ rule all:
     input:
         # The first rule should define the default target files
         # Subsequent target rules can be specified below. They should start with all_*.
+
+rule all_trim_pe:
+    input:
+        expand("fastp/trimmed/pe/{file}{end}.fastq.gz",
+                file = make_targets_from_runTable(runTable)[1],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
 rule all_trim:
     input:
@@ -62,7 +71,7 @@ rule all_merge_local_global:
 rule all_combine_bam_files:
     input:
         expand("mergeSam/combine/pe/{file}.bam",
-               file = make_targets_from_runTable(runTable)[53])
+               file = make_targets_from_runTable(runTable)[1])
 
 rule all_hicBuildMatrix_bin_test_run:
     input:
@@ -82,15 +91,15 @@ rule all_hicBuildMatrix_bin:
     input:
         expand("hicexplorer/hicBuildMatrix_bin/{resolution}/{file}_hic_matrix.{ext}",
                resolution = "20000",
-               file = make_targets_from_runTable(runTable)[15],
+               file = make_targets_from_runTable(runTable),
                ext = ["h5"]),
 
 rule all_hicBuildMatrix_rest:
     input:
         expand("hicexplorer/hicBuildMatrix_rest/{res_enzyme}/{file}_hic_matrix.{ext}",
                res_enzyme = "HindIII",
-               file = make_targets_from_runTable(runTable)[53],
-               ext = ["h5", "bam"])
+               file = make_targets_from_runTable(runTable),
+               ext = ["h5"])
 
 ##### rules for extended trial runs #####
 trial_samples = ['SAMN08446098/rep1/SRR6657510', 'SAMN08446098/rep1/SRR6657511',
@@ -105,6 +114,14 @@ rule trial_hicBuildMatrix_rest:
                res_enzyme = "HindIII",
                file = trial_samples,
                ext = ["h5", "bam"])
+
+rule trial_hicBuildMatrix_bin:
+    input:
+        expand("hicexplorer/hicBuildMatrix_bin/{resolution}/{file}_hic_matrix.{ext}",
+               resolution = "100000",
+               file = trial_samples,
+               ext = ["h5"])
+
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
 include: "rules/align.smk"

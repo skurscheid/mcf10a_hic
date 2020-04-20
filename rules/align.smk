@@ -2,9 +2,6 @@ __author__ = "Sebastian Kurscheid (sebastian.kurscheid@anu.edu.au)"
 __license__ = "MIT"
 __date__ = "2020-02-04"
 
-# vim: syntax=python tabstop=4 expandtab
-# coding: utf-8
-
 
 """
 Rules for aligning reads with bowtie2
@@ -162,6 +159,6 @@ rule combine_bam_files:
         combinedBam = "mergeSam/combine/pe/{biosample}/{rep}/{run}.bam"
     shell:
         """ 
-            python {params.hicpro_dir}/scripts/mergeSAM.py -q {params.qual} -f {input.bam1} -r {input.bam2} -o {output.combinedBam} -q {params.qual} -t {log.stat} 2>>{log.log}
+            python {params.hicpro_dir}/scripts/mergeSAM.py -q {params.qual} -f {input.bam1} -r {input.bam2} -o {output.combinedBam} -t {log.stat} 2>>{log.log}
         """
 

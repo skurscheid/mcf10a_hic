@@ -11,7 +11,7 @@
         "walltime": "23:59:00",
         "storage" : "scratch/kv78",
         "mem" : "64G",
-	"jobfs" : "256G"
+        "jobfs" : "256G"
     },
     "hicCorrelate_per_batch":
     {
