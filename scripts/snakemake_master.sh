@@ -1,11 +1,11 @@
 #!/bin/bash
 #PBS -P pb97
-#PBS -l walltime=12:00:00
+#PBS -l walltime=24:00:00
 #PBS -l wd
 #PBS -q biodev
 #PBS -e /home/150/sxk150/qsub_error
 #PBS -o /home/150/sxk150/qsub_out
-#PBS -l ncpus=1
+#PBS -l ncpus=4
 #PBS -l mem=4GB
 #PBS -M skurscheid@gmail.com
 #PBS -m abe

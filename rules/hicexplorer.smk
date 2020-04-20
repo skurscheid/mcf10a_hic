@@ -123,13 +123,13 @@ rule hicBuildMatrix_bin_test_run:
         mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
         mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
     benchmark:
-        "benchmarks/hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}/times.tsv"
+        "benchmarks/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/times.tsv"
     log:
-        "logs/hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}/log.txt"
+        "logs/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/log.txt"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}/qc"),
-        outBam = "hicexplorer/hicBuildMatrix_bin/{resolution}/{biosample}/{rep}/{run}_hic_matrix.bam"
+        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}_hic_matrix.h5",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/qc"),
+        outBam = "hicexplorer/hicBuildMatrix_bin/{resolution}/test_run/{biosample}/{rep}/{run}_hic_matrix.bam"
     shell:
         """
         hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -151,7 +151,7 @@ rule hicBuildMatrix_bin:
     params:
         inputBufferSize = 400000
     threads:
-        8
+        16
     input:
         mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
         mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
