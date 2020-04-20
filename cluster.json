@@ -9,7 +9,7 @@
         "M" : "skurscheid@gmail.com",
         "m" : "abe",
         "walltime": "23:59:00",
-        "storage" : "scratch/kv78",
+        "storage" : "scratch/kv78+gdata/kv78",
         "mem" : "64G",
         "jobfs" : "256G"
     },
