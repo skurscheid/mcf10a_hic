@@ -127,6 +127,41 @@ rule hicQC:
         '''
             hicQC --logfiles {input.qc_files}\
                   --labels {params.labels}\
-                  --outputFolder {output}
+                  --outputFolder {output} 2>{log.logfile}
         '''
 
+rule hicCorrelate:
+    conda:
+        '../envs/hicexplorer.yaml'
+    version:
+        1
+    params:
+        inputBufferSize = 400000,
+        labels = lambda wildcards: list(runTable.loc[runTable.BioSample == wildcards['biosample']].Run),
+        method = 'pearson',
+        plotFileFormat = 'pdf',
+        cli_params = '--log1p ',
+        range = 20000:2000000
+    threads:
+        16
+    log:
+        logfile = 'hicexplorer/hicCorrelate/{tool}/{res}/{biosample}.log'
+    input:
+        matrix = lambda wildcards: expand('/'.join(['hicexplorer', wildcards['tool'], wildcards['res'], wildcards['biosample']]) +\
+                                            '/{run}_hic_matrix.h5',\
+                                            run = list(runTable.loc[runTable.BioSample == wildcards['biosample'], ['replicate', 'Run']].apply(lambda x: '/'.join(x), axis=1)))
+    output:
+        scatter = 'hicexplorer/hicCorrelate/{tool}/{res}/{biosample}_scatter.pdf',
+        heatmap = 'hicexplorer/hicCorrelate/{tool}/{res}/{biosample}_heatmap.pdf'
+    shell:
+        '''
+            hicCorrelate --matrices {input.matrix}\
+                         --method {params.method}\
+                         --labels {params.labels}\
+                         --outFileNameHeatmap {output.heatmap}\
+                         --outFileNameScatter {output.scatter}\
+                         {params.cli_params}\
+                         --range {params.range}\
+                         --threads {threads} 2>{log.logfile}
+        '''
+       
