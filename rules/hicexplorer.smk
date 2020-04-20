@@ -43,39 +43,6 @@ rule mappableRestSites:
     shell:
         "touch {output.mappable_rest_sites_bed}"
 
-rule hicBuildMatrix_restrictionCutFile_test_run:
-    conda:
-        "../envs/hicexplorer.yaml"
-    version:
-        5
-    params:
-        inputBufferSize = 400000
-    threads:
-        8
-    input:
-        mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
-        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam",
-        restrictionCutFile = "hicexplorer/findRestSite/hg38_{res_enzyme}_rest_sites.bed"
-    benchmark:
-        "benchmarks/hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}/times.tsv"
-    log: 
-        "logs/hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}/log.txt"
-    output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}/qc"),
-        outBam = "hicexplorer/hicBuildMatrix_rest/test_run/{res_enzyme}/{biosample}/{rep}/{run}_hic_matrix.bam"
-    shell:
-        """
-        hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
-                --restrictionCutFile {input.restrictionCutFile} \
-                --threads {threads} \
-                --inputBufferSize {params.inputBufferSize} \
-                --outFileName {output.outHicMatrix} \
-                --outBam {output.outBam}\
-                --QCfolder {output.qcFolder} \
-                --doTestRun 1>{log} 2>{log}
-        """
-
 rule hicBuildMatrix_restrictionCutFile:
     conda:
         "../envs/hicexplorer.yaml"
@@ -109,40 +76,6 @@ rule hicBuildMatrix_restrictionCutFile:
                 1>{log} 2>{log}
         """
 
-rule hicBuildMatrix_bin_test_run:
-    conda:
-        "../envs/hicexplorer.yaml"
-    version:
-        1
-    params:
-        inputBufferSize = 400000,
-        restrictionSequence = "AAGCTT"
-    threads:
-        8
-    input:
-        mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
-        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
-    benchmark:
-        "benchmarks/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/times.tsv"
-    log:
-        "logs/hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/log.txt"
-    output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}_hic_matrix.h5",
-        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/test_run/{resolution}/{biosample}/{rep}/{run}/qc"),
-        outBam = "hicexplorer/hicBuildMatrix_bin/{resolution}/test_run/{biosample}/{rep}/{run}_hic_matrix.bam"
-    shell:
-        """
-        hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
-                --threads {threads}\
-                --restrictionSequence {params.restrictionSequence}\
-                --binSize {wildcards.resolution}\
-                --inputBufferSize {params.inputBufferSize} \
-                --outFileName {output.outHicMatrix} \
-                --outBam {output.outBam}\
-                --QCfolder {output.qcFolder} \
-                --doTestRun 1>{log} 2>{log}
-        """
-
 rule hicBuildMatrix_bin:
     conda:
         "../envs/hicexplorer.yaml"
@@ -171,4 +104,29 @@ rule hicBuildMatrix_bin:
                     --outFileName {output.outHicMatrix} \
                     --QCfolder {output.qcFolder} 1>{log} 2>{log}
         """
+
+rule hicQC:
+    conda:
+        '../envs/hicexplorer.yaml'
+    version:
+        1
+    params:
+        inputBufferSize = 400000,
+        labels = lambda wildcards: list(runTable.loc[runTable.BioSample == wildcards['biosample']].Run)
+    threads:
+        16
+    log:
+        logfile = 'hicexplorer/hicqc/{tool}/{res}/{biosample}.log'
+    input:
+        qc_files = lambda wildcards: expand('/'.join(['hicexplorer', wildcards['tool'], wildcards['res'], wildcards['biosample']]) +\
+                                            '/{run}/qc/QC.log',\
+                                            run = list(runTable.loc[runTable.BioSample == wildcards['biosample'], ['replicate', 'Run']].apply(lambda x: '/'.join(x), axis=1)))
+    output:
+        directory('hicexplorer/hicQC/{tool}/{res}/{biosample}/')
+    shell:
+        '''
+            hicQC --logfiles {input.qc_files}\
+                  --labels {params.labels}\
+                  --outputFolder = {output}
+        '''
 
