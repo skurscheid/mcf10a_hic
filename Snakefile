@@ -99,6 +99,11 @@ rule all_hicQC_rest:
         expand('hicexplorer/hicQC/hicBuildMatrix_rest/HindIII/{biosample}/',
                 biosample = list(pd.unique(runTable.BioSample)))
 
+rule all_hicQC_bin:
+    input:
+        expand('hicexplorer/hicQC/hicBuildMatrix_bin/20000/{biosample}/',
+                biosample = list(pd.unique(runTable.BioSample)))
+
 ##### rules for extended trial runs #####
 trial_samples = ['SAMN08446098/rep1/SRR6657510', 'SAMN08446098/rep1/SRR6657511',
                  'SAMN08446098/rep1/SRR6657512', 'SAMN08446098/rep1/SRR6657513',
