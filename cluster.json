@@ -3,7 +3,6 @@
     {
         "P" : "pb97",
         "queue" : "biodev",
-        "mem" : "32G",
         "std1_out_dir" : "/home/150/sxk150/qsub_out",
         "error_out_dir" : "/home/150/sxk150/qsub_error",
         "M" : "skurscheid@gmail.com",
