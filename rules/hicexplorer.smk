@@ -116,7 +116,7 @@ rule hicQC:
     threads:
         16
     log:
-        logfile = 'hicexplorer/hicqc/{tool}/{res}/{biosample}.log'
+        logfile = 'logs/hicexplorer/hicQC/{tool}/{res}/{biosample}.log'
     input:
         qc_files = lambda wildcards: expand('/'.join(['hicexplorer', wildcards['tool'], wildcards['res'], wildcards['biosample']]) +\
                                             '/{run}/qc/QC.log',\
@@ -145,7 +145,7 @@ rule hicCorrelate:
     threads:
         16
     log:
-        logfile = 'hicexplorer/hicCorrelate/{tool}/{res}/{biosample}.log'
+        logfile = 'logs/hicexplorer/hicCorrelate/{tool}/{res}/{biosample}.log'
     input:
         matrix = lambda wildcards: expand('/'.join(['hicexplorer', wildcards['tool'], wildcards['res'], wildcards['biosample']]) +\
                                             '/{run}_hic_matrix.h5',\
