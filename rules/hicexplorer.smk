@@ -125,7 +125,8 @@ rule hicBuildMatrix_bin_mcool:
     benchmark:
         "benchmarks/hicexplorer/hicBuildMatrix_bin/multi_resolution/{biosample}/{rep}/{run}_mcool.tsv"
     output:
-        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/multi_resolution/{biosample}/{rep}/{run}_hic_matrix.mcool"
+        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/multi_resolution/{biosample}/{rep}/{run}_hic_matrix.mcool",
+        qcFolder = directory("hicexplorer/hicBuildMatrix_bin/multi_resolution/{biosample}/{rep}/{run}/qc")
     shell:
         """
             hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
@@ -134,6 +135,7 @@ rule hicBuildMatrix_bin_mcool:
                     --inputBufferSize {params.inputBufferSize} \
                     --genomeAssembly {params.genomeAssembly} \
                     --danglingSequence {params.danglingSequence} \
+                    --QCfolder {output.qcFolder} \
                     --outFileName {output.outHicMatrix} 1>{log} 2>{log}
         """
 
