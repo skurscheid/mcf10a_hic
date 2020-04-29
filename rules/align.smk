@@ -128,7 +128,7 @@ rule samtools_merge_local_global:
         """
 
 rule samtools_sort_merged_bam:
-    """ sorts the BAM files from merge step """
+    """ sorts the BAM files from merge step - based on HiC-Pro pipeline """
     version:
         1
     conda:
@@ -151,7 +151,7 @@ rule samtools_sort_merged_bam:
         """
 
 rule combine_bam_files:
-    """ combines SE BAM files to a single PE BAM file with additional filtering """
+    """ combines SE BAM files to a single PE BAM file with additional filtering - based on HiC-Pro pipeline """
     version:
         1
     conda:

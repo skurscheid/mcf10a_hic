@@ -105,6 +105,39 @@ rule hicBuildMatrix_bin:
                     --QCfolder {output.qcFolder} 1>{log} 2>{log}
         """
 
+rule hicBuildMatrix_bin_mcool:
+    conda:
+        "../envs/hicexplorer.yaml"
+    version:
+        4
+    params:
+        inputBufferSize = 800000,
+        resolution = ['20000', '40000', '100000', '1000000', '2000000'],
+        genomeAssembly = config['params']['hicexplorer']['hicBuildMatrix']['genomeAssembly'],
+        danglingSequence = config['params']['hicexplorer']['hicBuildMatrix']['danglingSequence']
+    threads:
+        16
+    input:
+        mate1 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end1_suffix"] + ".bam",
+        mate2 = lambda wildcards: "/".join(["samtools", "sort", "se", wildcards["biosample"], wildcards["rep"], wildcards["run"]]) + config["params"]["general"]["end2_suffix"] + ".bam"
+    log:
+        "logs/hicexplorer/hicBuildMatrix_bin/multi_resolution/{biosample}/{rep}/{run}_mcool.txt"
+    benchmark:
+        "benchmarks/hicexplorer/hicBuildMatrix_bin/multi_resolution/{biosample}/{rep}/{run}_mcool.tsv"
+    output:
+        outHicMatrix = "hicexplorer/hicBuildMatrix_bin/multi_resolution/{biosample}/{rep}/{run}_hic_matrix.mcool"
+    shell:
+        """
+            hicBuildMatrix --samFiles {input.mate1} {input.mate2} \
+                    --threads {threads} \
+                    --binSize {params.resolution}\
+                    --inputBufferSize {params.inputBufferSize} \
+                    --genomeAssembly {params.genomeAssembly} \
+                    --danglingSequence {params.danglingSequence} \
+                    --outFileName {output.outHicMatrix} 1>{log} 2>{log}
+        """
+
+
 rule hicQC:
     conda:
         '../envs/hicexplorer.yaml'
@@ -116,7 +149,7 @@ rule hicQC:
     threads:
         16
     log:
-        logfile = 'hicexplorer/hicqc/{tool}/{res}/{biosample}.log'
+        logfile = 'logs/hicexplorer/hicQC/{tool}/{res}/{biosample}.log'
     input:
         qc_files = lambda wildcards: expand('/'.join(['hicexplorer', wildcards['tool'], wildcards['res'], wildcards['biosample']]) +\
                                             '/{run}/qc/QC.log',\
@@ -145,7 +178,7 @@ rule hicCorrelate:
     threads:
         16
     log:
-        logfile = 'hicexplorer/hicCorrelate/{tool}/{res}/{biosample}.log'
+        logfile = 'logs/hicexplorer/hicCorrelate/{tool}/{res}/{biosample}.log'
     input:
         matrix = lambda wildcards: expand('/'.join(['hicexplorer', wildcards['tool'], wildcards['res'], wildcards['biosample']]) +\
                                             '/{run}_hic_matrix.h5',\
@@ -164,4 +197,3 @@ rule hicCorrelate:
                          --range {params.range}\
                          --threads {threads} 2>{log.logfile}
         '''
-       
