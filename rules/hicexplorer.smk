@@ -141,7 +141,7 @@ rule hicCorrelate:
         method = 'pearson',
         plotFileFormat = 'pdf',
         cli_params = '--log1p ',
-        range = 20000:2000000
+        range = '20000:2000000'
     threads:
         16
     log:

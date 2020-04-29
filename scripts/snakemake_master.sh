@@ -9,7 +9,7 @@
 #PBS -l mem=4GB
 #PBS -M skurscheid@gmail.com
 #PBS -m abe
-#PBS -l storage=scratch/kv78
+#PBS -l storage=scratch/kv78+gdata/kv78
 
 target=${cli_target}
 
