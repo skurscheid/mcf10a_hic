@@ -134,7 +134,6 @@ rule hicBuildMatrix_bin_mcool:
                     --binSize {params.resolution}\
                     --inputBufferSize {params.inputBufferSize} \
                     --genomeAssembly {params.genomeAssembly} \
-                    --danglingSequence {params.danglingSequence} \
                     --QCfolder {output.qcFolder} \
                     --outFileName {output.outHicMatrix} 1>{log} 2>{log}
         """
