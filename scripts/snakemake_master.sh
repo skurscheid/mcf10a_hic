@@ -15,8 +15,8 @@ target=${cli_target}
 
 source ~/.bashrc
 
-/home/150/sxk150/miniconda3/envs/snakemake/bin/snakemake -s /home/150/sxk150/cellular_identity_nucleome/Snakefile ${cli_target}\
-    --configfile /home/150/sxk150/cellular_identity_nucleome/config.yaml\
+/home/150/sxk150/miniconda3/envs/snakemake/bin/snakemake -s /home/150/sxk150/mcf10a_hic/Snakefile ${cli_target}\
+    --configfile /home/150/sxk150/mcf10a_hic/config.yaml\
 	--use-conda\
 	--cluster "qsub -P {cluster.P}\
                     -l ncpus={threads} \
@@ -31,10 +31,10 @@ source ~/.bashrc
                     -e {cluster.error_out_dir} \
                     -o {cluster.std1_out_dir}" \
 	--jobs 100\
-	-d /scratch/kv78/cellular_identity_nucleome\
+	-d ~/data/mcf10a-hic\
 	--rerun-incomplete \
     --local-cores 1\
-	--cluster-config /home/150/sxk150/cellular_identity_nucleome/cluster.json\
+	--cluster-config /home/150/sxk150/mcf10a_hic/cluster.json\
     --keep-going\
 	-pr 
 
