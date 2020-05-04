@@ -23,9 +23,9 @@ params:
       gadi: "~/data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/genome.fa"
     hicBuildMatrix:
       genomeAssembly: "GRCh38"
-        HindIII:
-          restrictionSequence: "AAGCTT"
-          danglingSequence: "AGCT"
+      HindIII:
+        restrictionSequence: "AAGCTT"
+        danglingSequence: "AGCT"
     findRestSites:
       HindIII : "AAGCTT"
       DpnII: "GATC"
