@@ -15,6 +15,8 @@ min_version("5.1.2")
 #configfile: "config.yaml"
 
 runTable = pd.read_csv("SraRunTable.csv", sep = ",")
+rest_enzyme = config['rest_enzyme']
+machine = config['machine']
 
 ##### load additional functions #####
 

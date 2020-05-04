@@ -23,7 +23,7 @@ rule bowtie2_se_global:
     threads:
         8
     params:
-        index = get_index("gadi", config),
+        index = get_index(machine, config),
         cli_params_global = config['params']['bowtie2']['cli_params_global'],
         samtools_params_global = "-F 4 -bS"
     log:
@@ -54,8 +54,8 @@ rule cutsite_trimming:
     threads:
         1
     params:
-        hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
-        cutsite = "AAGCTT" #HindIII
+        hicpro_dir = config['params']['hicpro']['install_dir'][machine],
+        cutsite = 
     log:
         log = "logs/cutsite_trimming/{biosample}/{rep}/{run}{end}.log"
     input:
@@ -76,7 +76,7 @@ rule bowtie2_se_local:
     threads:
         8
     params:
-        index = get_index("gadi", config),
+        index = get_index(machine, config),
         cli_params_local = config['params']['bowtie2']['cli_params_local'],
         samtools_params_local = "-bS"
     log:
@@ -155,7 +155,7 @@ rule combine_bam_files:
     group:
         "post_alignment"
     params:
-        hicpro_dir = config['params']['hicpro']['install_dir']['gadi'],
+        hicpro_dir = config['params']['hicpro']['install_dir'][machine],
         qual = config['params']['general']['alignment_quality']
     log:
         log = "logs/mergeSAM/{biosample}/{rep}/{run}.log",

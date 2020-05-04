@@ -35,6 +35,7 @@ source ~/.bashrc
 	--rerun-incomplete \
     --local-cores 1\
 	--cluster-config /home/150/sxk150/mcf10a_hic/cluster.json\
+    --config rest_enzyme=DpnII_HinfI machine=gadi\
     --keep-going\
 	-pr 
 

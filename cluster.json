@@ -7,7 +7,7 @@
         "error_out_dir" : "/home/150/sxk150/qsub_error",
         "M" : "skurscheid@gmail.com",
         "m" : "abe",
-        "walltime": "23:59:00",
+        "walltime": "48:00:00",
         "storage" : "scratch/kv78+gdata/kv78",
         "mem" : "64G",
         "jobfs" : "256G"
