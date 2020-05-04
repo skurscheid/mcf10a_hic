@@ -35,7 +35,7 @@ source ~/.bashrc
 	-d ~/data/mcf10a-hic\
 	--rerun-incomplete \
     --local-cores 1\
-	--cluster-config /home/150/sxk150/cellular_identitmcf10a_hicy_nucleome/cluster.json\
+	--cluster-config /home/150/sxk150/mcf10a_hic/cluster.json\
     --config rest_enzyme=DpnII_HinfI machine=gadi\
     --keep-going\
 	-pr

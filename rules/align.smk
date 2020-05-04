@@ -55,7 +55,7 @@ rule cutsite_trimming:
         1
     params:
         hicpro_dir = config['params']['hicpro']['install_dir'][machine],
-        cutsite = 
+        cutsite = config['params']['hicpro']['cutsite_trimming']['ligation_site'][rest_enzyme]
     log:
         log = "logs/cutsite_trimming/{biosample}/{rep}/{run}{end}.log"
     input:

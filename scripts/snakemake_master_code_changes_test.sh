@@ -1,4 +1,19 @@
-export target='all_hicBuildMatrix_bin_mcool'
+#!/bin/bash
+#PBS -P pb97
+#PBS -l walltime=48:00:00
+#PBS -l wd
+#PBS -q biodev
+#PBS -e /home/150/sxk150/qsub_error
+#PBS -o /home/150/sxk150/qsub_out
+#PBS -l ncpus=1
+#PBS -l mem=16GB
+#PBS -M skurscheid@gmail.com
+#PBS -m abe
+#PBS -l storage=scratch/kv78+gdata/kv78
+
+target=${cli_target}
+
+source ~/.bashrc
 
 /home/150/sxk150/miniconda3/envs/snakemake/bin/snakemake -s /home/150/sxk150/mcf10a_hic/Snakefile\
     -R `/home/150/sxk150/mcf10a_hic/scripts/cli_snakemake.sh ${target} --lc`\
@@ -20,7 +35,8 @@ export target='all_hicBuildMatrix_bin_mcool'
 	-d ~/data/mcf10a-hic\
 	--rerun-incomplete \
     --local-cores 1\
-	--cluster-config /home/150/sxk150/cellular_identitmcf10a_hicy_nucleome/cluster.json\
+	--cluster-config /home/150/sxk150/mcf10a_hic/cluster.json\
     --config rest_enzyme=DpnII_HinfI machine=gadi\
     --keep-going\
 	-prn
+

@@ -113,8 +113,7 @@ rule hicBuildMatrix_bin_mcool:
     params:
         inputBufferSize = 800000,
         resolution = ['20000', '40000', '100000', '1000000', '2000000'],
-        genomeAssembly = config['params']['hicexplorer']['hicBuildMatrix']['genomeAssembly'],
-        danglingSequence = config['params']['hicexplorer']['hicBuildMatrix']['danglingSequence']
+        genomeAssembly = config['params']['hicexplorer']['hicBuildMatrix']['genomeAssembly']
     threads:
         16
     input:
