@@ -64,7 +64,7 @@ rule cutsite_trimming:
         cutsite_trimmed = temp("cutsite_trimming/{biosample}/{rep}/{run}{end}.fastq")
     shell:
         """ 
-            {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output} --rmuntrim
+            {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output}
         """
 
 rule bowtie2_se_local:
