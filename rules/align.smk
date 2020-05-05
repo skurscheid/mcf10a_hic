@@ -64,7 +64,7 @@ rule cutsite_trimming:
         cutsite_trimmed = temp("cutsite_trimming/{biosample}/{rep}/{run}{end}.fastq")
     shell:
         """ 
-            {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output}
+            {params.hicpro_dir}/scripts/cutsite_trimming --fastq {input} --cutsite {params.cutsite} --out {output} --rmuntrim
         """
 
 rule bowtie2_se_local:
@@ -94,7 +94,7 @@ rule bowtie2_se_local:
                     {params.cli_params_local}\
                     --rg-id BML\
                     --rg SM:{wildcards.run}{wildcards.end}:local_step\
-                    2>> {log.log}\
+                    2>{log.log}\
             | samtools view {params.samtools_params_local} - > {output.bam}
         """
 
@@ -118,7 +118,7 @@ rule samtools_merge_local_global:
         mergedBam = "samtools/merge/se/{biosample}/{rep}/{run}{end}.bam"
     shell:
         """
-            samtools merge -@ {threads} -n -f {output.mergedBam} {input.bam1} {input.bam2}
+            samtools merge -@ {threads} -n -f {output.mergedBam} {input.bam1} {input.bam2} 2>{log.log}
         """
 
 rule samtools_sort_merged_bam:
@@ -141,7 +141,7 @@ rule samtools_sort_merged_bam:
         sortedBam = "samtools/sort/se/{biosample}/{rep}/{run}{end}.bam"
     shell:
         """
-            samtools sort -@ {threads} -n -T {params.tempPrefix} -o {output.sortedBam} {input}
+            samtools sort -@ {threads} -n -T {params.tempPrefix} -o {output.sortedBam} {input} 2>{log.log}
         """
 
 rule combine_bam_files:
@@ -167,6 +167,6 @@ rule combine_bam_files:
         combinedBam = "mergeSam/combine/pe/{biosample}/{rep}/{run}.bam"
     shell:
         """ 
-            python {params.hicpro_dir}/scripts/mergeSAM.py -q {params.qual} -f {input.bam1} -r {input.bam2} -o {output.combinedBam} -t {log.stat} 2>>{log.log}
+            python {params.hicpro_dir}/scripts/mergeSAM.py -q {params.qual} -f {input.bam1} -r {input.bam2} -o {output.combinedBam} -t {log.stat} 2>{log.log}
         """
 
