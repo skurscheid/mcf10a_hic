@@ -138,6 +138,11 @@ rule trial_hicBuildMatrix_rest:
                file = trial_samples,
                ext = ["h5", "bam"])
 
+rule trial_combine_bam_files:
+    input:
+        expand("mergeSam/combine/pe/{file}.bam",
+               file = make_targets_from_runTable(runTable)[0])
+
 rule trial_hicBuildMatrix_bin_mcool:
     input:
         expand('hicexplorer/hicBuildMatrix_bin/multi_resolution/{file}_hic_matrix.mcool',
