@@ -141,7 +141,7 @@ rule trial_hicBuildMatrix_rest:
 rule trial_hicBuildMatrix_bin_mcool:
     input:
         expand('hicexplorer/hicBuildMatrix_bin/multi_resolution/{file}_hic_matrix.mcool',
-               file = trial_samples)
+               file = make_targets_from_runTable(runTable)[0])
 
 ##### load additional workflow rules #####
 include: "rules/fastp.smk"
