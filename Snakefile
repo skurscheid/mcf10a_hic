@@ -14,10 +14,12 @@ min_version("5.1.2")
 
 machine = config['machine']
 runTable_file = config['params']['general'][config['project']]['runTable']['file']
-library_type = config['library_type']
+uibrary_type = config['library_type']
 selected_columns = config['params']['general'][config['project']]['runTable']['selected_columns']
 chip_input_value = config['params']['general'][config['project']]['runTable']['chip_input_value']
 rest_enzyme = config['rest_enzyme']
+
+runTable = pd.read_csv(config['params']['general'][project]['runTable']['file'], sep = ',', index_col='row_id')
 
 
 ##### load additional functions #####
@@ -157,6 +159,7 @@ rule trial_hicBuildMatrix_bin_mcool:
                file = make_targets_from_runTable(runTable)[0])
 
 ##### load additional workflow rules #####
+include: "rules/sra_download.smk"
 include: "rules/fastp.smk"
 include: "rules/align.smk"
 include: "rules/hicexplorer.smk"
