@@ -44,11 +44,11 @@
         "walltime" : "2:00:00",
         "queue" : "copyq"
     },
-    "prefetch_se":
+    "prefetch_pe":
     {
         "P" : "gp60",
         "mem" : "4G",
-	"walltime" : "2:00:00",
+	"walltime" : "10:00:00",
 	"queue" : "copyq"
     }
 }
