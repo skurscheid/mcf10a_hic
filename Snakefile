@@ -33,6 +33,12 @@ rule all:
         # The first rule should define the default target files
         # Subsequent target rules can be specified below. They should start with all_*.
 
+rule all_sra_download:
+    input:
+        expand("raw/{file}{suffix}.fastq.gz",
+               file = make_targets_from_runTable(runTable, library_type),
+               suffix = ['_1', '_2'])
+
 rule all_trim:
     input:
         expand("fastp/trimmed/se/{file}{end}.fastq.gz",

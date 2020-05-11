@@ -7,6 +7,14 @@ def make_targets_from_runTable(runTable):
     t = []
     for index, row in runTable.iterrows():
         e = list(row[['BioSample', 'replicate', 'Run']])
+        
+def make_targets_from_runTable_new(runTable, library_type, selected_columns, chip_input_value):
+    t = []
+    for index, row in runTable.iterrows():
+        library = row[selected_columns[0]].split()[0]
+        if library == chip_input_value:
+            library = 'Input'
+        e = list([row[selected_columns[2]], library, library_type, row['Run']])
         p = "/".join(e)
         t.append(p)
     return(t)
@@ -85,3 +93,4 @@ def h5PerSampleLabels(wildcards):
     for index, row in units[units.sample_id == wildcards["sample"]].iterrows():
         labels.append(row['batch'])
     return(sample)
+
