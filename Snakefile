@@ -159,6 +159,13 @@ rule trial_hicBuildMatrix_bin_mcool:
         expand('hicexplorer/hicBuildMatrix_bin/multi_resolution/{file}_hic_matrix.mcool',
                file = make_targets_from_runTable(runTable)[0])
 
+rule trial_all_trim:
+    input:
+        expand("fastp/trimmed/{library_type}/{file}{end}.fastq.gz",
+                library_type = library_type,
+                file = make_targets_from_runTable(runTable)[0],
+                end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
+
 ##### load additional workflow rules #####
 include: "rules/sra_download.smk"
 include: "rules/fastp.smk"
