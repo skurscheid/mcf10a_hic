@@ -15,7 +15,7 @@ rule prefetch_se:
         sra_file = temp("sra_download/{cell_line}/{chip_antibody}/se/{run}.sra")
     shell:
         """
-            prefetch {wildcards.run} --output-file {output.sra_file}
+            prefetch {wildcards.run} --output-file {output.sra_file} 2>{log}
         """
 
 rule prefetch_pe:
@@ -32,7 +32,7 @@ rule prefetch_pe:
         sra_file = temp("sra_download/pe/{cell_line}/{chip_antibody}/{run}.sra")
     shell:
         """
-            prefetch {wildcards.run} --output-file {output.sra_file}
+            prefetch {wildcards.run} --output-file {output.sra_file} 2>{log}
         """
 
 rule fastq_dump_se:
