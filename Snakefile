@@ -14,11 +14,11 @@ min_version("5.1.2")
 
 machine = config['machine']
 runTable_file = config['params']['general'][config['project']]['runTable']['file']
-uibrary_type = config['library_type']
+library_type = config['library_type']
 selected_columns = config['params']['general'][config['project']]['runTable']['selected_columns']
 chip_input_value = config['params']['general'][config['project']]['runTable']['chip_input_value']
 rest_enzyme = config['rest_enzyme']
-
+project = config['project']
 runTable = pd.read_csv(config['params']['general'][project]['runTable']['file'], sep = ',', index_col='row_id')
 
 
