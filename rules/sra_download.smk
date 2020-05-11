@@ -36,6 +36,24 @@ rule fastq_dump_se:
             fastq-dump --skip-technical {input} --stdout > {output} 2>{log}
         """
 
+rule fastq_dump_pe:
+    version:
+        1
+    conda:
+        "../envs/sra_tools.yaml"
+    threads:
+        4
+    log:
+        "logs/fastq-dump/{cell_line}/{chip_antibody}/pe/{run}.log"
+    input:
+        rules.prefetch_se.output.sra_file
+    output:
+        temp(directory("raw/{cell_line}/{chip_antibody}/pe/{run}"))
+    shell:
+        """
+            fastq-dump --skip-technical --split-files {input} --outdir {output} 2>{log}
+        """
+
 rule pigz_fastq_se:
     version:
         1
@@ -47,6 +65,22 @@ rule pigz_fastq_se:
         rules.fastq_dump_se.output
     output:
         "raw/{cell_line}/{chip_antibody}/se/{run}.fastq.gz"
+    shell:
+        """
+            pigz --processes {threads} --stdout {input} > {output} 2>{log}
+        """
+    
+rule pigz_fastq_pe:
+    version:
+        1
+    threads:
+        4
+    log:
+        "logs/pigz_fastq/{cell_line}/{chip_antibody}/pe/{run}.log"
+    input:
+        rules.fastq_dump_pe.output
+    output:
+        "raw/{cell_line}/{chip_antibody}/pe/{run}{suffix}.fastq.gz"
     shell:
         """
             pigz --processes {threads} --stdout {input} > {output} 2>{log}

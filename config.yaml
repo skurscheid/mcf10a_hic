@@ -1,7 +1,16 @@
 samples: samples.tsv
 units: units.tsv
 
+
+
 params:
+  general:
+    PRJEB21971:
+      runTable:
+        file: 'PRJEB21971_RunTable.txt'
+        selected_columns: ['Alias', 'Assay Type', 'Run']
+        aggregate_column: 'condition'
+        chip_input_value: 'none'
   hicexplorer:
     genome_fasta:
       shiny: ""
