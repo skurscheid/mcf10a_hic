@@ -25,6 +25,8 @@ rule prefetch_pe:
         "../envs/sra_tools.yaml"
     threads:
         1
+    params:
+        max-size = lambda wildcards: list(runTable[runTable.Run == wildcards['Run']].Bytes + 1000000)
     log:
         "logs/prefetch/pe/{cell_line}/{chip_antibody}/{run}.log"
     input:
@@ -32,7 +34,7 @@ rule prefetch_pe:
         sra_file = temp("sra_download/pe/{cell_line}/{chip_antibody}/{run}.sra")
     shell:
         """
-            prefetch {wildcards.run} --output-file {output.sra_file} 2>{log}
+            prefetch --max-size {params.max-size} {wildcards.run} --output-file {output.sra_file} 2>{log}
         """
 
 rule fastq_dump_se:
