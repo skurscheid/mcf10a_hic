@@ -10,13 +10,15 @@ from snakemake.utils import validate, min_version
 
 min_version("5.1.2")
 
-##### load codMCF10AshZsheets #####
+##### set variables #####
 
-#configfile: "config.yaml"
-
-runTable = pd.read_csv("SraRunTable.csv", sep = ",")
-rest_enzyme = config['rest_enzyme']
 machine = config['machine']
+runTable_file = config['params']['general'][config['project']]['runTable']['file']
+library_type = config['library_type']
+selected_columns = config['params']['general'][config['project']]['runTable']['selected_columns']
+chip_input_value = config['params']['general'][config['project']]['runTable']['chip_input_value']
+rest_enzyme = config['rest_enzyme']
+
 
 ##### load additional functions #####
 
@@ -36,7 +38,7 @@ rule all:
 rule all_sra_download:
     input:
         expand("raw/{file}{suffix}.fastq.gz",
-               file = make_targets_from_runTable(runTable, library_type),
+               file = make_targets_from_runTable_new(runTable, library_type, selected_columns, chip_input_value),
                suffix = ['_1', '_2'])
 
 rule all_trim:
