@@ -23,8 +23,8 @@ rule run_fastp_pe:
     log:
         log = "logs/fastp/pe/{biosample}/{replicate}/{run}.log"
     input:
-        fq1 = "raw/pe/{cell_line}/{chip_antibody}/{run}_1.fastq.gz",
-        fq2 = "raw/pe/{cell_line}/{chip_antibody}/{run}{suffix}.fastq.gz"
+        fq1 = "raw/pe/{biosample}/{replicate}/{run}_1.fastq.gz",
+        fq2 = "raw/pe/{biosample}/{replicate}/{run}_2.fastq.gz"
     output:
         out1 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_1.fastq.gz",
         out2 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_2.fastq.gz",
@@ -33,7 +33,7 @@ rule run_fastp_pe:
     shell:
         """
             fastp -i {input.fq1} -I {input.fq2}\
-                  -o {output.out1} -O {output.ou2}\
+                  -o {output.out1} -O {output.out2}\
                   --html {output.report_html} --json {output.report_json}\
                   --length_required 30\
                   --disable_quality_filtering\

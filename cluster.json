@@ -43,5 +43,12 @@
         "mem" : "4G",
         "walltime" : "2:00:00",
         "queue" : "copyq"
+    },
+    "prefetch_se":
+    {
+        "P" : "gp60",
+        "mem" : "4G",
+	"walltime" : "2:00:00",
+	"queue" : "copyq"
     }
 }
