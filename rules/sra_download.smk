@@ -97,9 +97,9 @@ rule pigz_fastq_pe:
     log:
         "logs/pigz_fastq/pe/{cell_line}/{chip_antibody}/{run}{suffix}.log"
     input:
-        rules.fastq_dump_pe.output
+        "raw/pe/{cell_line}/{chip_antibody}/{run}/{run}{suffix}.fastq"
     output:
-        "raw/pe/{cell_line}/{chip_antibody}/{run}{suffix}.fastq.gz"
+        "raw/pe/{cell_line}/{chip_antibody}/{run}/{run}{suffix}.fastq.gz"
     shell:
         """
             pigz --processes {threads} --stdout {input} > {output} 2>{log}
