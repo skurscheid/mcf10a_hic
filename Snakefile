@@ -39,8 +39,8 @@ rule all:
 
 rule all_sra_download:
     input:
-        expand("raw/{file}{suffix}.fastq.gz",
-               file = make_targets_from_runTable(runTable, library_type),
+        expand("raw/pe/{file}{suffix}.fastq.gz",
+               file = make_targets_from_runTable(runTable),
                suffix = ['_1', '_2'])
 
 rule all_trim:

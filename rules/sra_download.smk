@@ -18,6 +18,23 @@ rule prefetch_se:
             prefetch {wildcards.run} --output-file {output.sra_file}
         """
 
+rule prefetch_pe:
+    version:
+        1
+    conda:
+        "../envs/sra_tools.yaml"
+    threads:
+        1
+    log:
+        "logs/prefetch/pe/{cell_line}/{chip_antibody}/{run}.log"
+    input:
+    output:
+        sra_file = temp("sra_download/pe/{cell_line}/{chip_antibody}/{run}.sra")
+    shell:
+        """
+            prefetch {wildcards.run} --output-file {output.sra_file}
+        """
+
 rule fastq_dump_se:
     version:
         1
@@ -46,9 +63,9 @@ rule fastq_dump_pe:
     log:
         "logs/fastq-dump/{cell_line}/{chip_antibody}/pe/{run}.log"
     input:
-        rules.prefetch_se.output.sra_file
+        rules.prefetch_pe.output.sra_file
     output:
-        temp(directory("raw/{cell_line}/{chip_antibody}/pe/{run}"))
+        temp(directory("raw/pe/{cell_line}/{chip_antibody}/{run}"))
     shell:
         """
             fastq-dump --skip-technical --split-files {input} --outdir {output} 2>{log}
@@ -76,11 +93,11 @@ rule pigz_fastq_pe:
     threads:
         4
     log:
-        "logs/pigz_fastq/{cell_line}/{chip_antibody}/pe/{run}.log"
+        "logs/pigz_fastq/pe/{cell_line}/{chip_antibody}/{run}{suffix}.log"
     input:
         rules.fastq_dump_pe.output
     output:
-        "raw/{cell_line}/{chip_antibody}/pe/{run}{suffix}.fastq.gz"
+        "raw/pe/{cell_line}/{chip_antibody}/{run}{suffix}.fastq.gz"
     shell:
         """
             pigz --processes {threads} --stdout {input} > {output} 2>{log}

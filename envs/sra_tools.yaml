@@ -1,0 +1,9 @@
+name: sra-tools
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - ncbi-ngs-sdk=2.10.2=hdf6179e_0
+  - sra-tools=2.10.1=pl526haddd2b5_0
+  - pytools=2020.1

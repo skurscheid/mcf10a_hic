@@ -12,6 +12,7 @@
 #PBS -l storage=scratch/kv78+gdata/kv78
 
 target=${cli_target}
+wd=${work_dir}
 
 source ~/.bashrc
 
@@ -31,11 +32,11 @@ source ~/.bashrc
                     -e {cluster.error_out_dir} \
                     -o {cluster.std1_out_dir}" \
 	--jobs 100\
-	-d ~/data/mcf10a-hic\
+	-d ${wd}\
 	--rerun-incomplete \
-    --local-cores 1\
+    --local-cores 4\
 	--cluster-config /home/150/sxk150/mcf10a_hic/cluster.json\
-    --config rest_enzyme=DpnII_HinfI machine=gadi\
+    --config rest_enzyme=DpnII_HinfI machine=gadi project=PRJEB21971 library_type=pe\
     --keep-going\
 	-pr 
 
