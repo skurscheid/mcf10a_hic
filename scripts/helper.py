@@ -7,26 +7,10 @@ def make_targets_from_runTable(runTable):
     t = []
     for index, row in runTable.iterrows():
         e = list(row[['BioSample', 'replicate', 'Run']])
-        
-def make_targets_from_runTable_new(runTable, library_type, selected_columns, chip_input_value):
-    t = []
-    for index, row in runTable.iterrows():
-        library = row[selected_columns[0]].split()[0]
-        if library == chip_input_value:
-            library = 'Input'
-        e = list([row[selected_columns[2]], library, library_type, row['Run']])
         p = "/".join(e)
         t.append(p)
     return(t)
 
-def create_testing_input(base_path, units):
-    """creates test files for snakemake run"""
-    for index, row in units.iterrows():
-        fq1, fq2 = Path(base_path ,row['fq1']), Path(base_path ,row['fq2'])
-        p = Path(os.path.split(fq1)[0])
-        p.mkdir(parents = True, exist_ok = True)
-        fq1.touch(exist_ok = True)
-        fq2.touch(exist_ok = True)
 
 def fastp_targets(units):
     """function for creating snakemake targets for executing fastp rule"""
@@ -93,4 +77,3 @@ def h5PerSampleLabels(wildcards):
     for index, row in units[units.sample_id == wildcards["sample"]].iterrows():
         labels.append(row['batch'])
     return(sample)
-
