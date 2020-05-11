@@ -23,8 +23,8 @@ rule run_fastp_pe:
     log:
         log = "logs/fastp/pe/{biosample}/{replicate}/{run}.log"
     input:
-        fq1 = "raw/pe/{biosample}/{replicate}/{run}_1.fastq.gz",
-        fq2 = "raw/pe/{biosample}/{replicate}/{run}_2.fastq.gz"
+        fq1 = "raw/pe/{biosample}/{replicate}/{run}/{run}_1.fastq.gz",
+        fq2 = "raw/pe/{biosample}/{replicate}/{run}/{run}_2.fastq.gz"
     output:
         out1 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_1.fastq.gz",
         out2 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_2.fastq.gz",
