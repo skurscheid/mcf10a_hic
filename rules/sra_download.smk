@@ -67,10 +67,12 @@ rule fastq_dump_pe:
     input:
         rules.prefetch_pe.output.sra_file
     output:
-        temp(directory("raw/pe/{cell_line}/{chip_antibody}/{run}"))
+        temp(directory("raw_fastq/pe/{cell_line}/{chip_antibody}/{run}")),
+        "raw_fastq/pe/{cell_line}/{chip_antibody}/{run}/{run}_1.fastq",
+        "raw_fastq/pe/{cell_line}/{chip_antibody}/{run}/{run}_2.fastq"
     shell:
         """
-            fastq-dump --skip-technical --split-files {input} --outdir {output} 2>{log}
+            fastq-dump --skip-technical --split-files {input} --outdir {output[0]} 2>{log}
         """
 
 rule pigz_fastq_se:
@@ -97,11 +99,12 @@ rule pigz_fastq_pe:
     log:
         "logs/pigz_fastq/pe/{cell_line}/{chip_antibody}/{run}{suffix}.log"
     input:
-        "raw/pe/{cell_line}/{chip_antibody}/{run}/{run}{suffix}.fastq"
+        dir = rules.fastq_dump_pe.output,
+        file = lambda wildcards: "/".join(['raw_fastq', 'pe', wildcards['cell_line'], wildcards['chip_antibody'], wildcards['run'], wildcards['run'] + wildcards['suffix'] + '.fastq'])
     output:
         "raw/pe/{cell_line}/{chip_antibody}/{run}/{run}{suffix}.fastq.gz"
     shell:
         """
-            pigz --processes {threads} --stdout {input} > {output} 2>{log}
+            pigz --processes {threads} --stdout {input.file} > {output} 2>{log}
         """
     

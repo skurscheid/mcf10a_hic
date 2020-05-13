@@ -23,8 +23,8 @@ rule run_fastp_pe:
     log:
         log = "logs/fastp/pe/{biosample}/{replicate}/{run}.log"
     input:
-        fq1 = lambda wildcards: "/".join(['raw', 'pe', wildcards['biosample'], wilcards['replicate'], wildcards['run'], wildcards['run'] + '_1.fastq.gz']),
-        fq2 = lambda wildcards: "/".join(['raw', 'pe', wildcards['biosample'], wilcards['replicate'], wildcards['run'], wildcards['run'] + '_2.fastq.gz']),
+        fq1 = lambda wildcards: "/".join(['raw', 'pe', wildcards['biosample'], wildcards['replicate'], wildcards['run'], wildcards['run'] + '_1.fastq.gz']),
+        fq2 = lambda wildcards: "/".join(['raw', 'pe', wildcards['biosample'], wildcards['replicate'], wildcards['run'], wildcards['run'] + '_2.fastq.gz']),
     output:
         out1 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_1.fastq.gz",
         out2 = "fastp/trimmed/pe/{biosample}/{replicate}/{run}_2.fastq.gz",
