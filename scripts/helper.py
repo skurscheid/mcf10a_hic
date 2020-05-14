@@ -11,7 +11,6 @@ def make_targets_from_runTable(runTable):
         t.append(p)
     return(t)
 
-
 def fastp_targets(units):
     """function for creating snakemake targets for executing fastp rule"""
     t = []
