@@ -15,5 +15,6 @@ about=${cli_about}
 
 module load bwa/0.7.17
 module load java/jdk-8.40
+
 ~/software/bin/juicer/scripts/juicer.sh -g hg38 -a $about -p ~/data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/chrom_sizes.txt -y ~/software/bin/juicer/restriction_sites/hg38_HindIII.txt -D ~/software/bin/juicer -s HindIII -t 32
 

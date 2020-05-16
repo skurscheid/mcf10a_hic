@@ -13,4 +13,4 @@
 
 module load java
 
-~/software/bin/juicer/scripts/common/mega.sh -g hg38 -s Arima -D ~/software/bin/juicer
+~/software/bin/juicer/scripts/common/mega.sh -g hg38 -s HindIII -D ~/software/bin/juicer
