@@ -11,6 +11,9 @@
 #PBS -m abe
 #PBS -l storage=scratch/kv78+gdata/kv78
 
-module load java
+about=${cli_about}
 
+module load bwa/0.7.17
+module load java/jdk-8.40
 ~/software/bin/juicer/scripts/common/mega.sh -g hg38 -s HindIII -D ~/software/bin/juicer
+
