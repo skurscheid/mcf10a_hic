@@ -13,6 +13,8 @@
 
 about=${cli_about}
 
+echo $(pwd)
+
 module load bwa/0.7.17
 module load java/jdk-8.40
 ~/software/bin/juicer/scripts/common/mega.sh -g hg38 -s HindIII -D ~/software/bin/juicer

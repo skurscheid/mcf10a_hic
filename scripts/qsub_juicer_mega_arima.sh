@@ -15,5 +15,8 @@ about=${cli_about}
 
 module load bwa/0.7.17
 module load java/jdk-8.40
+
+echo $(pwd)
+
 ~/software/bin/juicer/scripts/common/mega.sh -g hg38 -s Arima -D ~/software/bin/juicer
 

@@ -14,5 +14,7 @@
 module load bwa/0.7.17
 module load java/jdk-8.40
 
+echo $(pwd)
+
 ~/software/bin/juicer/scripts/juicer.sh -g hg38 -p ~/data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/chrom_sizes.txt -y ~/software/bin/juicer/restriction_sites/hg38_Arima.txt -D ~/software/bin/juicer -s Arima -t $PBS_NCPUS
 

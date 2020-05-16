@@ -16,6 +16,8 @@ export juiceDir='/home/150/sxk150/software/bin/juicer'
 export outputdir='aligned'
 export genomeID='hg38'
 
+echo $(pwd)
+
 module load bwa/0.7.17
 module load java/jdk-8.40
 ${juiceDir}/scripts/common/juicer_tools pre -s ${outputdir}/inter.txt -g ${outputdir}/inter_hists.m -q 1 ${outputdir}/merged_nodups.txt ${outputdir}/inter.hic ${genomeID}
