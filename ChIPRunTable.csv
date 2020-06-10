@@ -1,0 +1,11 @@
+Run,BioSample,Cell_type,Experiment,Sample Name,source_name,SRA Study,time_point,replicate,library_type
+SN501_0087_DTremethick_JCSMR_MCF10A_ChIPSeq,MCF10ATGFB,Breast epithelial cells TGFbeta treated,SRX9999999,H2AZ_TGFb_10A_high_rep2/Florida_10_S5,Cultured human breast epithelial cell,SRP999999,Day x,rep2,H2AZ
+SN501_0087_DTremethick_JCSMR_MCF10A_ChIPSeq,MCF10ATGFB,Breast epithelial cells TGFbeta treated,SRX9999999,H2AZ_TGFb_10A_high_rep1/Florida_9_S4,Cultured human breast epithelial cell,SRP999999,Day x,rep1,H2AZ
+SN501_0087_DTremethick_JCSMR_MCF10A_ChIPSeq,MCF10ASHZKD,Breast epithelial cells H2A.Z knock-down,SRX9999999,Inp_shZ_10A_high_rep1/Florida_6_S1,Cultured human breast epithelial cell,SRP999999,Day x,rep1,Input
+SN501_0087_DTremethick_JCSMR_MCF10A_ChIPSeq,MCF10ASHZKD,Breast epithelial cells H2A.Z knock-down,SRX9999999,Inp_shZ_10A_high_rep2/Florida_7_S2,Cultured human breast epithelial cell,SRP999999,Day x,rep2,Input
+SN501_0087_DTremethick_JCSMR_MCF10A_ChIPSeq,MCF10ATGFB,Breast epithelial cells TGFbeta treated,SRX9999999,Inp_TGFb_10A_high_rep2/Florida_8_S3,Cultured human breast epithelial cell,SRP999999,Day x,rep2,Input
+NB501086_0086_DSTremethick_JCSMR_MCF10A_ChIPseq,MCF10AWT,Breast epithelial cells,SRX9999999,H2AZ_10A_high_rep1/Florida_2_S2,Cultured human breast epithelial cell,SRP999999,Day x,rep1,H2AZ
+NB501086_0086_DSTremethick_JCSMR_MCF10A_ChIPseq,MCF10AWT,Breast epithelial cells,SRX9999999,H2AZ_10A_high_rep2/Florida_4_S4,Cultured human breast epithelial cell,SRP999999,Day x,rep2,H2AZ
+NB501086_0086_DSTremethick_JCSMR_MCF10A_ChIPseq,MCF10AWT,Breast epithelial cells,SRX9999999,Inp_10A_high_rep1/Florida_1_S1,Cultured human breast epithelial cell,SRP999999,Day x,rep1,Input
+NB501086_0086_DSTremethick_JCSMR_MCF10A_ChIPseq,MCF10AWT,Breast epithelial cells,SRX9999999,Inp_10A_high_rep2/Florida_3_S3,Cultured human breast epithelial cell,SRP999999,Day x,rep2,Input
+NB501086_0086_DSTremethick_JCSMR_MCF10A_ChIPseq,MCF10ATGFB,Breast epithelial cells TGFbeta treated,SRX9999999,Inp_10A_TGFb_high_rep1/Florida_5_S5,Cultured human breast epithelial cell,SRP999999,Day x,rep1,Input
