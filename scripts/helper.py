@@ -3,6 +3,7 @@ import os
 import yaml
 import pandas as pd
 
+# functions used in Snakefile
 def make_targets_from_runTable(runTable):
     t = []
     for index, row in runTable.iterrows():
@@ -20,6 +21,16 @@ def create_testing_input(base_path, units):
         fq1.touch(exist_ok = True)
         fq2.touch(exist_ok = True)
 
+# functions for fastp rules
+def fastp_input(runTable, wildcards):
+    """function for creating gathering input files for fastp processing"""
+    t = []
+    row = runTable.loc[(runTable.Run == wildcards['Run']) & (runTable.BioSample == wildcards['BioSample']) & (runTable.replicate == wildcards['replicate'])]
+    fq1, fq2 = row['fq1'].to_string(index=False), row['fq2'].to_string(index=False)
+    t.append(fq1)
+    t.append(fq2)
+    return(t)
+
 def fastp_targets(units):
     """function for creating snakemake targets for executing fastp rule"""
     t = []
@@ -27,6 +38,7 @@ def fastp_targets(units):
         t.append(row['batch'] + "/" + row['sample_id'] + "_" + row['lane'] + "_" + str(row['replicate']))
     return(t)
 
+# functions for hicexplorer rules
 def hicmatrixbuilder_targets(units):
     """function for creating snakemake targets for executing hicmatrixbuilder rule"""
     t = []

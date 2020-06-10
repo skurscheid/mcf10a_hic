@@ -29,7 +29,7 @@ rule bowtie2_se_global:
     log:
         log = "logs/bowtie2_global/{biosample}/{rep}/{run}{end}.log"
     input:
-        fq = "fastp/trimmed/se/{biosample}/{rep}/{run}{end}.fastq.gz"
+        fq = "fastp/trimmed/pe/{biosample}/{rep}/{run}{end}.fastq.gz"
     output:
         bam = "bowtie2/align_global/se/{biosample}/{rep}/{run}{end}.bam",
         unmapped = "bowtie2/align_global/se/{biosample}/{rep}/{run}{end}.unmap.fastq"

@@ -33,6 +33,7 @@ params:
   bowtie2:
     cli_params_global: "--very-sensitive -L 30 --score-min L,-0.6,-0.2 --end-to-end --reorder"
     cli_params_local: "--very-sensitive -L 20 --score-min L,-0.6,-0.2 --end-to-end --reorder"
+    cli_params_global_chip: "--very-sensitive --end-to-end"
     index:
       shiny: ""
       gdu: "/home/skurscheid/Data/References/Genomes/Homo_sapiens/GRCh38_ensembl84/canonical/index/hg38_ensembl84"

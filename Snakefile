@@ -35,7 +35,7 @@ rule all:
 
 rule all_trim:
     input:
-        expand("fastp/trimmed/se/{file}{end}.fastq.gz",
+        expand("fastp/trimmed/pe/{file}{end}.fastq.gz",
                 file = make_targets_from_runTable(runTable),
                 end = [config["params"]["general"]["end1_suffix"], config["params"]["general"]["end2_suffix"]])
 
